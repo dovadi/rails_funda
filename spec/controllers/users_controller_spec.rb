@@ -1,5 +1,5 @@
 require File.dirname(__FILE__) + '/../spec_helper'
-  
+
 # Be sure to include AuthenticatedTestHelper in spec/spec_helper.rb instead
 # Then, you can remove it from this and the units test.
 include AuthenticatedTestHelper
@@ -14,7 +14,6 @@ describe UsersController do
     end.should change(User, :count).by(1)
   end
 
-  
   it 'signs up user in pending state' do
     create_user
     assigns(:user).reload
@@ -33,7 +32,7 @@ describe UsersController do
       response.should be_success
     end.should_not change(User, :count)
   end
-  
+
   it 'requires password on signup' do
     lambda do
       create_user(:password => nil)
@@ -41,7 +40,7 @@ describe UsersController do
       response.should be_success
     end.should_not change(User, :count)
   end
-  
+
   it 'requires password confirmation on signup' do
     lambda do
       create_user(:password_confirmation => nil)
@@ -57,8 +56,8 @@ describe UsersController do
       response.should be_success
     end.should_not change(User, :count)
   end
-  
-  
+
+
   it 'activates user' do
     User.authenticate('aaron', 'monkey').should be_nil
     get :activate, :activation_code => users(:aaron).activation_code
@@ -67,29 +66,71 @@ describe UsersController do
     flash[:error ].should     be_nil
     User.authenticate('aaron', 'monkey').should == users(:aaron)
   end
-  
+
   it 'does not activate user without key' do
     get :activate
     flash[:notice].should     be_nil
     flash[:error ].should_not be_nil
   end
-  
+
   it 'does not activate user with blank key' do
     get :activate, :activation_code => ''
     flash[:notice].should     be_nil
     flash[:error ].should_not be_nil
   end
-  
+
   it 'does not activate user with bogus key' do
     get :activate, :activation_code => 'i_haxxor_joo'
     flash[:notice].should     be_nil
     flash[:error ].should_not be_nil
   end
-  
+
+  it 'does suspend an user' do
+    user = users(:quentin)
+    get :suspend, {:id=>user.id} 
+    user.reload
+    user.state.should == "suspended"
+    response.should be_redirect
+    response.should redirect_to(users_path)
+  end
+
+  it 'does unsuspend an user' do
+    user = users(:quentin)
+    user.state = 'suspended'
+    user.save
+
+    get :unsuspend, {:id=>user.id}, {:user=>users}
+    user.reload
+    user.state.should == "active"
+    response.should be_redirect
+    response.should redirect_to(users_path)
+  end
+
+  it 'does purge an user' do
+    lambda do
+      user = users(:quentin)
+      get :purge, {:id=>user.id}
+      response.should be_redirect
+      response.should redirect_to(users_path)      
+    end.should change(User, :count).by(-1)  
+  end
+
+  it 'does delete an user' do
+    lambda do
+      user = users(:quentin)
+      delete 'destroy',:id=>user.id
+      user.reload
+      user.state.should == "deleted"
+      response.should be_redirect
+      response.should redirect_to(users_path)      
+    end.should_not change(User, :count)
+  end
+
   def create_user(options = {})
     post :create, :user => { :login => 'quire', :email => 'quire@example.com',
       :password => 'quire69', :password_confirmation => 'quire69' }.merge(options)
   end
+
 end
 
 describe UsersController do
