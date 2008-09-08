@@ -1,0 +1,7 @@
+db/*.db
+db/schema.rb
+log
+index
+coverage
+
+
