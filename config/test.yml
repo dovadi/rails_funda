@@ -1,0 +1,14 @@
+--- 
+development: 
+  site_url: http://localhost:3000
+  admin_email: donotrepy@dovadi.com
+production: 
+  site_url: http://www.example.com
+  admin_email: donotrepy@example.com
+test: 
+  site_url: http://test.host
+global: 
+  secret_for_sessions: 44d7438c21d15ae8b6f8517a47ef02846cbdff5c69524db80003f9cbbd82cfe76cd95b598e68da0c76658569e954717077748290223cf5a3428f68d375c7dbe6
+  secret_protect_from_forgery: f3ef81d4a7bcac090302d868b48e919f
+  site_title: RAILS FUNDA
+  rest_auth_site_key: 2134ae69e60f21a2279ca66149303165

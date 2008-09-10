@@ -1,5 +1,4 @@
 # Be sure to restart your server when you modify this file
-
 # Uncomment below to force Rails into production mode when
 # you don't control web/app server and can't set it the proper way
 # ENV['RAILS_ENV'] ||= 'production'
@@ -9,8 +8,17 @@ RAILS_GEM_VERSION = '2.1.1' unless defined? RAILS_GEM_VERSION
 
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
+require 'yaml'
+require 'active_support/core_ext/hash/keys'
+class Hash #:nodoc:
+  include ActiveSupport::CoreExtensions::Hash::Keys
+end
 
 Rails::Initializer.run do |config|
+  
+  APP_CONFIG = YAML.load_file("#{RAILS_ROOT}/config/config.yml")[RAILS_ENV].symbolize_keys
+  GLOBAL_CONFIG = YAML.load_file("#{RAILS_ROOT}/config/config.yml")["global"].symbolize_keys
+ 
   # Settings in config/environments/* take precedence over those specified here.
   # Application configuration should go into files in config/initializers
   # -- all .rb files in that directory are automatically loaded.
@@ -50,7 +58,7 @@ Rails::Initializer.run do |config|
   # no regular words or you'll be exposed to dictionary attacks.
   config.action_controller.session = {
     :session_key => '_rails_funda_session',
-    :secret      => '00b09871ac6f25601ec4a6cc5ed28da73d1633a12e3f44a32ab90151c6842bcf46eceb9b37445846ba87c3005b425656c18c8442a53f44b8591f32e1f6db971a'
+    :secret      => GLOBAL_CONFIG[:secret_for_sessions]#'00b09871ac6f25601ec4a6cc5ed28da73d1633a12e3f44a32ab90151c6842bcf46eceb9b37445846ba87c3005b425656c18c8442a53f44b8591f32e1f6db971a'
   }
 
   # Use the database for sessions instead of the cookie-based default,
