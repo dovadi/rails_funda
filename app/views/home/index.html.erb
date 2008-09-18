@@ -1,1 +1,5 @@
-Hello, <%=current_user.login%>
+<%content_for (:title, current_user.login) %>
+<h2>Hello, <%=current_user.login%></h2>
+<div style="height:100px;">
+  This is your home page. For now you can <%=link_to "edit", edit_user_path(current_user), { :title => "Edit account information" } %> you account information or do <%= link_to "log out", logout_path, { :title => "Log out" }%> .
+</div>

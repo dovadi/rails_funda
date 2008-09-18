@@ -52,7 +52,7 @@ class UsersController < ApplicationController
     end
     
     if @user.update_attributes(params[:user])
-      redirect_back_or_default('/')
+      redirect_to :controller=>:home
       flash[:notice] = "Your account is updated"
     else
       flash[:error]  = "Account can not be updated because of errors in validation."
