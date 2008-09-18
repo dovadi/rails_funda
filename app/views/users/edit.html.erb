@@ -1,0 +1,22 @@
+<%content_for (:title, "Edit you account information") %>
+
+<%content_for (:left, error_messages_for(:user)) %>
+
+<h1>Edit you account information</h1>
+<% @user.password = @user.password_confirmation = nil %>
+
+<% form_for :user, :url => user_path(@user), :html=>{:method=>:put} do |f| -%>
+<p><%= label_tag 'login' %><br/>
+<%= f.text_field :login, :class=>"text" %></p>
+
+<p><%= label_tag 'email' %><br/>
+<%= f.text_field :email, :class=>"text" %></p>
+
+<p><%= label_tag 'password' %><br/>
+<%= f.password_field :password, :class=>"text" %></p>
+
+<p><%= label_tag 'password_confirmation', 'Confirm Password' %><br/>
+<%= f.password_field :password_confirmation, :class=>"text" %></p>
+
+<p><%= submit_tag 'Update' %></p>
+<% end -%>
