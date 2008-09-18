@@ -2,19 +2,19 @@ development:
   adapter: mysql
   database: funda_development
   username: root
-  password: Qwerty2007.
+  password: 
   encoding: utf8
  
 test:
   adapter: mysql
   database: funda_test
   username: root
-  password: Qwerty2007.
+  password: 
   encoding: utf8
 
 production:
   adapter: mysql
   database: funda_production
   username: root
-  password: Qwerty2007.
+  password: 
   encoding: utf8
