@@ -21,7 +21,8 @@
       <hr />
       <%=flash_helper%>
       <div class="span-6">
-        <%= yield(:left) || "&nbsp;"%>
+        <%left = (yield :left)%>
+        <%= left.blank? ? "&nbsp" : left%>
       </div>
       <div class="span-12">
         <%=yield%>

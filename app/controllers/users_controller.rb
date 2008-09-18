@@ -42,6 +42,25 @@ class UsersController < ApplicationController
       redirect_back_or_default('/')
     end
   end
+  
+  def edit
+    @user = User.find_by_id(params[:id])
+  end
+  
+  def update
+    @user = User.find_by_id(params[:id])
+    if params[:user][:pasword].blank? && params[:user][:password_confirmation].blank?
+      params[:user].delete_if{|key, value| [:password, :password_confirmation].include?(key)}
+    end
+    
+    if @user.update_attributes(params[:user])
+      redirect_back_or_default('/')
+      flash[:notice] = "Your account is updated"
+    else
+      flash[:error]  = "Account can not be updated because of errors in validation."
+      render :action => 'edit'
+    end
+  end
 
   def suspend
     @user.suspend! 
