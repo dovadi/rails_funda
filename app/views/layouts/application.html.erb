@@ -21,14 +21,17 @@
       <hr />
       <%=flash_helper%>
       <div class="span-6">
-        &nbsp;
+        <%= yield(:left) || "&nbsp;"%>
       </div>
       <div class="span-12">
-        
         <%=yield%>
       </div>
+      <div class="span-6 last">
+        <%=yield :right%>
+       </div> 
       <hr />
-      <div class="span-6 last"><a href="http://github.com/dovadi/rails_funda">Rails Funda</a></div>
+      <div class="span-6 last">
+        <a href="http://github.com/dovadi/rails_funda">Rails Funda</a></div>
     </div>
   </body> 
 </html>
