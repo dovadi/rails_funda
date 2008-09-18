@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="keywords" content=""/>
+    <meta name="description" content=""/>
+    <title><%=GLOBAL_CONFIG[:site_title]%> <%=" - #{yield(:title)}"%></title>
+    <%= stylesheet_link_tag "screen", :media => "all" %>
+    <%= stylesheet_link_tag "print", :media => "print" %>
+    <!--[if IE]><%= stylesheet_link_tag "ie", :media => "all" %><![endif]-->
+    
+  </head>
+  <body>
+    <div class="container">
+      <div class="span-20">
+        <h1><%=GLOBAL_CONFIG[:site_title]%></h1>
+      </div>
+      <div class="span-4 last">
+        <%=render :partial=>"users/user_bar"%>
+      </div>  
+      <hr />
+      <%=flash_helper%>
+      <div class="span-6">
+        &nbsp;
+      </div>
+      <div class="span-12">
+        
+        <%=yield%>
+      </div>
+      <hr />
+      <div class="span-6 last"><a href="http://github.com/dovadi/rails_funda">Rails Funda</a></div>
+    </div>
+  </body> 
+</html>
+
+
