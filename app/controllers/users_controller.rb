@@ -2,7 +2,7 @@ class UsersController < ApplicationController
   
   # Protect these actions behind an admin login
   #before_filter :admin_required, :only => [:suspend, :unsuspend, :destroy, :purge]
-  before_filter :find_user, :only => [:suspend, :unsuspend, :destroy, :purge]
+  before_filter :find_user, :only => [:suspend, :unsuspend, :destroy, :purge, :edit, :update]
   
 
   # render new.rhtml
@@ -42,11 +42,9 @@ class UsersController < ApplicationController
   end
   
   def edit
-    @user = User.find_by_id(params[:id])
   end
   
   def update
-    @user = User.find_by_id(params[:id])
     if params[:user][:pasword].blank? && params[:user][:password_confirmation].blank?
       params[:user].delete_if{|key, value| [:password, :password_confirmation].include?(key)}
     end
@@ -86,6 +84,6 @@ class UsersController < ApplicationController
 
 protected
   def find_user
-    @user = User.find(params[:id])
+    @user = User.find_by_id(params[:id])
   end
 end

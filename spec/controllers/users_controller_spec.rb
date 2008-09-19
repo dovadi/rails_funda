@@ -125,6 +125,36 @@ describe UsersController do
       response.should redirect_to(users_path)      
     end.should_not change(User, :count)
   end
+  
+  it 'should update account info without password' do
+    user = users(:quentin)
+    put :update, :id=>user.id, :user =>{:login=>'quentin_new', :email=>"fentoso@mambori.com"}
+    user = User.find_by_id(user.id)
+    user.login.should == "quentin_new"
+    user.email.should == "fentoso@mambori.com"
+    response.should be_redirect
+    flash[:error ].should be_nil
+  end
+  
+  it 'should not update account info when wrong data' do
+    user = users(:quentin)
+    put :update, :id=>user.id, :user =>{:login=>'l og in', :email=>"floso $ compo mero"}
+    response.should render_template("users/edit")
+    flash[:error ].should_not be_nil
+  end
+  
+  
+  
+  it 'should update account info and password' do
+    user = users(:quentin)
+    put :update, :id=>user.id, :user =>{:login=>'quentin_new', :email=>"fentoso@mambori.com", :password => 'quire69andmore', :password_confirmation => 'quire69andmore'}
+    user_new = User.find_by_id(user.id)
+    user_new.login.should == "quentin_new"
+    user_new.email.should == "fentoso@mambori.com"
+    user.crypted_password.should_not == user_new.crypted_password
+    response.should be_redirect
+  end
+  
 
   def create_user(options = {})
     post :create, :user => { :login => 'quire', :email => 'quire@example.com',

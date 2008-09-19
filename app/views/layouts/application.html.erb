@@ -7,6 +7,7 @@
     <title><%=GLOBAL_CONFIG[:site_title]%> <%=" - #{yield(:title)}"%></title>
     <%= stylesheet_link_tag "screen", :media => "all" %>
     <%= stylesheet_link_tag "print", :media => "print" %>
+    <%= stylesheet_link_tag "main", :media => "all" %>
     <!--[if IE]><%= stylesheet_link_tag "ie", :media => "all" %><![endif]-->
     
   </head>

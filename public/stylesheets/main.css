@@ -1,0 +1,17 @@
+/* Errors */
+.errorExplanation{background-color : #FFE6E6; padding : 6px; font-size : 0.9em;}
+.errorExplanation h2{font-size : 1.2em; color : #9A0000;}
+div.fieldWithErrors input{border : 1px solid #FFB3BC;}
+div.fieldWithErrors password{border : 1px solid #FFB3BC;}
+div.fieldWithErrors textarea{	border : 1px solid #FFB3BC;}
+
+/* Flashes */
+.error, .notice, .success {padding:.8em;margin-bottom:1em;border:2px solid #ddd;}
+.error {background:#FBE3E4;color:#8a1f11;border-color:#FBC2C4;}
+.notice {background:#FFF6BF;color:#514721;border-color:#FFD324;}
+.success {background:#E6EFC2;color:#264409;border-color:#C6D880;}
+.error a {color:#8a1f11;}
+.notice a {color:#514721;}
+.success a {color:#264409;}
+
+.height100{height:100px;}
