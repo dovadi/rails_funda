@@ -4,7 +4,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="keywords" content=""/>
     <meta name="description" content=""/>
-    <title><%=GLOBAL_CONFIG[:site_title]%> <%=" - #{yield(:title)}"%></title>
+    <title><%=CONFIG[:site_title]%> <%=" - #{yield(:title)}"%></title>
     <%= stylesheet_link_tag "screen", :media => "all" %>
     <%= stylesheet_link_tag "print", :media => "print" %>
     <%= stylesheet_link_tag "main", :media => "all" %>
@@ -14,7 +14,7 @@
   <body>
     <div class="container">
       <div class="span-20">
-        <h1><%=GLOBAL_CONFIG[:site_title]%></h1>
+        <h1><%=CONFIG[:site_title]%></h1>
       </div>
       <div class="span-4 last">
         <%=render :partial=>"users/user_bar"%>

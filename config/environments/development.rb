@@ -16,9 +16,8 @@ config.action_controller.perform_caching             = false
 # Don't care if the mailer can't send
 config.action_mailer.raise_delivery_errors = false
 
-HOST = "http://localhost:3000"
-ADMINISTRATOR = "donotrepy@dovadi.com"
 
+ActionMailer::Base.delivery_method = :test
 ActionMailer::Base.smtp_settings = {
   :address => "mail.planet.nl",
   :port => 25,
