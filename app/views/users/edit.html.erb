@@ -31,3 +31,25 @@
 <%= f.password_field :password_confirmation, :class=>"text" %></p>
 <p><%= submit_tag 'Change password' %></p>
 <% end -%>
+
+<hr/>
+
+<div class='tb-margin10 cancel_action' id="cancel_link">
+  <%=link_to_function "Cancel my account", " $('.cancel_action').toggle();"%> <small>with confirmation</small>
+</div>  
+
+<div id='cancel_account' class='hide cancel_action'>
+  <div class='notice'>You account and all realted data will be permanently removed.<br/>
+    Enter your password to cancel your account at <%=CONFIG[:site_title]%>.
+  </div>
+  <% form_tag user_path(current_user), :method=>:delete do -%>
+    <p>
+      <%= label_tag 'password' %><br/>
+      <%= password_field_tag 'password', nil, :class=>"text" %><br/>
+      <%=submit_tag "Delete my account", :action=>"destroy"%> or <%=link_to_function "Cancel", " $('.cancel_action').toggle();"%>
+    </p>
+  <%end%>
+</div>
+<%if flash[:not_deleted]%>
+  <script>$('.cancel_action').toggle();</script>
+<%end%>

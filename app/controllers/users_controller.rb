@@ -91,11 +91,12 @@ class UsersController < ApplicationController
     if @user.authenticated?(params[:password])
       @user.delete!
       logout_killing_session!
-      flash[:notice] = "Account is deleted."
+      flash[:success] = "Account is deleted."
       redirect_to login_path
     else
       flash[:error] = "Wrong password, account can not be deleted."
-      redirect_to home_path
+      flash[:not_deleted] = true
+      redirect_to :action=>:edit, :id=>@user.id
     end
   end
 

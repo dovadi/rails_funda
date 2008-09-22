@@ -133,7 +133,6 @@ describe UsersController do
       user.reload
       user.state.should_not == "deleted"
       response.should be_redirect
-      response.should redirect_to(home_path)      
     end.should_not change(User, :count)
   end
   
