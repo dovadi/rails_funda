@@ -18,12 +18,14 @@ module ApplicationHelper
  def streamlined_top_menus
    [
     ["View site", home_path],
+    ["Manage Roles", {:controller=>"admin/roles"}],
     ["Manage Users", {:controller=>"admin/user"}]
    ]
  end
  
  def streamlined_side_menus
    [
+    ["Manage Roles", {:controller=>"admin/roles"}],
     ["Manage Users", {:controller=>"admin/user"}]
    ]
  end
