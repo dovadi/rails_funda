@@ -47,6 +47,10 @@ class User < ActiveRecord::Base
   def email=(value)
     write_attribute :email, (value ? value.downcase : nil)
   end
+  
+  def self.states
+    ["pending", "passive", "active", "suspended", "deleted"]
+  end
 
   protected
     
