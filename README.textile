@@ -1,0 +1,34 @@
+h1. Rails Funda: Bootstrap the Web!
+
+*Rails Funda consists of the latest Rails version with added basic functionality and test library, so you're up and running in no time.*
+
+See "lighthouse":http://dovadi.lighthouseapp.com/projects/16557-rails_funda/overview for bugs and feature requests
+
+h2. Download
+
+Github: "Rails_funda":http://github.com/dovadi/rails_funda/tree/master 
+
+h2. Added functionality:
+
+* Restful_authentication with acts_as_state_machine
+* Generation of secret keys (rake funda:generate_secret_keys)
+* Roles with Role_requirement
+* Basis layout with Blueprint
+* Uniq user subdomains with subdomain_fu
+* Local configuration
+* Instant deployment with EC2
+* Admin backend with streamlined
+* etc. etc.
+
+h2. Test libraries
+
+* RSpec on Rails with Rcov
+* Factory Girl
+
+h2. Credits
+
+This project is sponsored and maintained by "Agile Dovadi BV":http://dovadi.com, contact "Frank Oxener":mailto:frank@dovadi.com
+
+h2. Licence
+
+Rails Funda is Copyright © 2008 Frank Oxener, Agile Dovadi BV. It is free software, and may be redistributed under the terms specified in the MIT-LICENSE file.

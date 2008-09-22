@@ -1,7 +1,12 @@
 --- 
 development: 
-  site_url: http://rails_funda:8080
+  site_url: http://localhost:3000
   admin_email: donotrepy@dovadi.com
+  delivery_method: smtp
+  smtp_settings:
+    address: mail.planet.nl
+    port: 25
+    domain: planet.nl
 global: 
   send_activation_password: false
   secret_protect_from_forgery: 855097b42e75fb500ee77ec076a5e7d4

@@ -3,5 +3,6 @@ db/schema.rb
 log
 index
 coverage
+config/config.yml
 
 

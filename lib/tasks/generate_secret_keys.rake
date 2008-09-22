@@ -1,10 +1,10 @@
 require 'rails_generator/secret_key_generator'
 require 'action_controller/cgi_ext/session'
 
-namespace :secret_keys do
+namespace :funda do
 
   desc "Generate new secret keys for session, cookies and authentication"
-  task :generate do
+  task :generate_secret_keys do
     config_file = "#{RAILS_ROOT}/config/config.yml"
     config_settings = YAML.load_file(config_file)
 
