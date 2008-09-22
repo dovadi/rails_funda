@@ -113,7 +113,7 @@ module RoleRequirementSystem
         render :nothing => true, :status => 401
         return false
       else
-        flash[:error] = "Sorry , you have no permission to do this" if logged_in? and CONFIG[:redirect_to_login_when_no_access]
+        flash[:notice] = "Sorry , you have no permission to do this" if logged_in? and CONFIG[:redirect_to_login_when_no_access]
         super
       end
     end

@@ -3,8 +3,8 @@ class UsersController < ApplicationController
   # Protect these actions behind an admin login
   #before_filter :admin_required, :only => [:suspend, :unsuspend, :destroy, :purge]
   before_filter :find_user, :only => [:suspend, :unsuspend, :destroy, :purge, :edit, :update, :change_password]
-  require_role "admin", :only => [:edit, :update, :change_password], :unless =>"@user == current_user"
-  require_role "admin", :only => [:suspend, :unsuspend, :purge, :destroy]
+  require_role "admin", :only => [:edit, :update, :change_password, :destroy], :unless =>"@user == current_user"
+  require_role "admin", :only => [:suspend, :unsuspend, :purge]
 
   # render new.rhtml
   def new
