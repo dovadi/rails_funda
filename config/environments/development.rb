@@ -16,10 +16,5 @@ config.action_controller.perform_caching             = false
 # Don't care if the mailer can't send
 config.action_mailer.raise_delivery_errors = false
 
-
-ActionMailer::Base.delivery_method = :test
-ActionMailer::Base.smtp_settings = {
-  :address => "mail.planet.nl",
-  :port => 25,
-  :domain => "planet.nl"
-}
+config.action_mailer.delivery_method = CONFIG[:delivery_method].to_sym
+config.action_mailer.smtp_settings = CONFIG[:smtp_settings].symbolize_keys
