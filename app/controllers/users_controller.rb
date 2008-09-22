@@ -94,7 +94,7 @@ class UsersController < ApplicationController
       redirect_to login_path
     else
       flash[:error] = "Wrong password, account can not be deleted."
-      redirect_to :action=>:edit
+      redirect_to home_path
     end
   end
 

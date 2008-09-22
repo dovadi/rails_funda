@@ -8,7 +8,7 @@
 </div>  
 <div id='cancel_account' class='hide cancel_action'>
   <div class='notice'>You account and all realted data will be permanently removed.<br/>
-    Enter your password to cancel your account at <%=GLOBAL_CONFIG[:site_title]%>.
+    Enter your password to cancel your account at <%=CONFIG[:site_title]%>.
   </div>
   <% form_tag user_path(current_user), :method=>:delete do -%>
     <p>
