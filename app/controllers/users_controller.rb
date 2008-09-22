@@ -2,7 +2,7 @@ class UsersController < ApplicationController
   
   # Protect these actions behind an admin login
   #before_filter :admin_required, :only => [:suspend, :unsuspend, :destroy, :purge]
-  before_filter :find_user, :only => [:suspend, :unsuspend, :destroy, :purge, :edit, :update]
+  before_filter :find_user, :only => [:suspend, :unsuspend, :destroy, :purge, :edit, :update, :change_password]
   
 
   # render new.rhtml
@@ -42,20 +42,38 @@ class UsersController < ApplicationController
   end
   
   def edit
+    unless @user==current_user # TODO: add check for admin role
+      flash[:notice] = "You can not edit this account."
+      redirect_to home_path
+    end
   end
   
   def update
-    if params[:user][:pasword].blank? && params[:user][:password_confirmation].blank?
-      params[:user].delete_if{|key, value| [:password, :password_confirmation].include?(key)}
-    end
-    
+    params[:user].delete_if{|key, value| [:password, :password_confirmation].include?(key)}
     if @user.update_attributes(params[:user])
       redirect_to :controller=>:home
-      flash[:notice] = "Your account is updated"
+      flash[:success] = "Your account is updated"
     else
       flash[:error]  = "Account can not be updated because of errors in validation."
       render :action => 'edit'
     end
+  end
+  
+  def change_password
+    user = User.authenticate(@user.login, params[:user][:password])
+    if user
+      params[:user][:password] = params[:new_password]
+      if !params[:user][:password].blank? && !params[:user][:password_confirmation].blank? && @user.update_attributes(params[:user])
+        flash[:success] = "Your password is changed."
+        redirect_to home_path
+      else
+        flash[:error]  = "Password is not changed because new password not provided."
+        render :action=>:edit, :id=>@user
+      end
+    else
+      flash[:error]  = "Password is not changed because old password is not valid."
+      render :action=>:edit, :id=>@user
+    end  
   end
 
   def suspend
@@ -67,10 +85,17 @@ class UsersController < ApplicationController
     @user.unsuspend! 
     redirect_to users_path
   end
-
+  
   def destroy
-    @user.delete!
-    redirect_to users_path
+    if @user.authenticated?(params[:password])
+      @user.delete!
+      logout_killing_session!
+      flash[:notice] = "Account is deleted."
+      redirect_to login_path
+    else
+      flash[:error] = "Wrong password, account can not be deleted."
+      redirect_to :action=>:edit
+    end
   end
 
   def purge

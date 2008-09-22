@@ -115,14 +115,14 @@ describe UsersController do
     end.should change(User, :count).by(-1)  
   end
 
-  it 'does delete an user' do
+  it 'does delete an user with provided password' do
     lambda do
-      user = users(:quentin)
-      delete 'destroy',:id=>user.id
+      user = users(:aaron)
+      delete 'destroy',:id=>user.id, :password=>'monkey'
       user.reload
       user.state.should == "deleted"
       response.should be_redirect
-      response.should redirect_to(users_path)      
+      response.should redirect_to(login_path)      
     end.should_not change(User, :count)
   end
   
@@ -145,17 +145,7 @@ describe UsersController do
   
   
   
-  it 'should update account info and password' do
-    user = users(:quentin)
-    put :update, :id=>user.id, :user =>{:login=>'quentin_new', :email=>"fentoso@mambori.com", :password => 'quire69andmore', :password_confirmation => 'quire69andmore'}
-    user_new = User.find_by_id(user.id)
-    user_new.login.should == "quentin_new"
-    user_new.email.should == "fentoso@mambori.com"
-    user.crypted_password.should_not == user_new.crypted_password
-    response.should be_redirect
-  end
   
-
   def create_user(options = {})
     post :create, :user => { :login => 'quire', :email => 'quire@example.com',
       :password => 'quire69', :password_confirmation => 'quire69' }.merge(options)

@@ -13,6 +13,8 @@ ActionController::Routing::Routes.draw do |map|
   
   map.main '', :controller=>'content', :action=>'index'
   
+  map.home '/home', :controller=>'home', :action=>'index'
+  
   # The priority is based upon order of creation: first created -> highest priority.
 
   # Sample of regular route:
