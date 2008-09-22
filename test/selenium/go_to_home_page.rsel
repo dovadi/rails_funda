@@ -1,0 +1,3 @@
+setup
+open '/'
+assert_title 'RAILS FUNDA - Welcome'
