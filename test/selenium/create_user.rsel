@@ -1,0 +1,11 @@
+setup :fixtures=>:users
+open '/'
+click_and_wait "link=Sign up"
+type 'user_login','dovadi'
+type 'user_email','frank@dovadi.com'
+type 'user_password','dovadi'
+type 'user_password_confirmation','dovadi'
+click_and_wait "commit"
+verify_element_present "css=#flash_messages"
+verify_element_present "css=.notice"
+verify_text_present "Thanks for signing up! We're sending you an email with your activation code."
