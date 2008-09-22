@@ -126,14 +126,33 @@ describe UsersController do
     end.should_not change(User, :count)
   end
   
-  it 'should update account info without password' do
+  it 'does not delete an user with wrong password' do
+    lambda do
+      user = users(:aaron)
+      delete 'destroy',:id=>user.id, :password=>'monkey23'
+      user.reload
+      user.state.should_not == "deleted"
+      response.should be_redirect
+      response.should redirect_to(home_path)      
+    end.should_not change(User, :count)
+  end
+  
+  it 'should update account info' do
     user = users(:quentin)
     put :update, :id=>user.id, :user =>{:login=>'quentin_new', :email=>"fentoso@mambori.com"}
-    user = User.find_by_id(user.id)
+    user.reload
     user.login.should == "quentin_new"
     user.email.should == "fentoso@mambori.com"
     response.should be_redirect
     flash[:error ].should be_nil
+  end
+  
+  it 'should not show edit form for other user then loggen in' do
+    user = users(:quentin)
+    login_as :aaron
+    get :edit, :id=>user.id
+    response.should be_redirect
+    flash[:notice].should_not be_nil
   end
   
   it 'should not update account info when wrong data' do
@@ -143,7 +162,46 @@ describe UsersController do
     flash[:error ].should_not be_nil
   end
   
+  it 'should update password with old password provided' do
+    user = users(:quentin)
+    login_as :quentin
+    old_pass = user.crypted_password.dup
+    post :change_password, :id=>user.id, :new_password=>'animal', :user =>{:password=>'monkey', :password_confirmation=>'animal'}
+    user.reload
+    user.crypted_password.should_not == old_pass
+    User.authenticate(user.login, 'animal').should_not be_nil
+    flash[:error ].should be_nil
+  end
   
+  it 'should not update password with wrong old password provided' do
+    user = users(:quentin)
+    old_pass = user.crypted_password.dup
+    post :change_password, :id=>user.id, :new_password=>'animal', :user =>{:password=>'monkey23', :password_confirmation=>'animal'}
+    user.reload
+    user.crypted_password.should == old_pass
+    User.authenticate(user.login, 'animal').should be_nil
+    flash[:error ].should_not be_nil
+  end
+  
+  it 'should not update password with empty new password provided' do
+    user = users(:quentin)
+    old_pass = user.crypted_password.dup
+    post :change_password, :id=>user.id, :new_password=>'', :user =>{:password=>'monkey', :password_confirmation=>''}
+    user.reload
+    user.crypted_password.should == old_pass
+    User.authenticate(user.login, 'animal').should be_nil
+    flash[:error ].should_not be_nil
+  end
+  
+  it 'should not update password with wrong confirmation for new password' do
+    user = users(:quentin)
+    old_pass = user.crypted_password.dup
+    post :change_password, :id=>user.id, :new_password=>'manilosa', :user =>{:password=>'monkey', :password_confirmation=>'maniloso'}
+    user.reload
+    user.crypted_password.should == old_pass
+    User.authenticate(user.login, 'animal').should be_nil
+    flash[:error ].should_not be_nil
+  end
   
   
   def create_user(options = {})
