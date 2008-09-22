@@ -1,8 +1,9 @@
 --- 
 development: 
-  site_url: http://localhost:3000
+  site_url: http://rails_funda:8080
   admin_email: donotrepy@dovadi.com
 global: 
+  send_activation_password: false
   secret_protect_from_forgery: 855097b42e75fb500ee77ec076a5e7d4
   secret_for_sessions: e280faf342d2a76bfe6bb8a8b86c75ea76c0cf7aaffa1480d482fec92a9d446c53e9fe6cf47c6cc20e6ee065e37293c82d2f5a2e1e043f14706866b196c80027
   site_title: RAILS FUNDA

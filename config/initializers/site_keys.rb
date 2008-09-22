@@ -19,7 +19,7 @@
 if RAILS_ENV=='test'
   REST_AUTH_SITE_KEY = '7b2afa229cc1d25e82c0968a044de43835ff272c'
 else
-  REST_AUTH_SITE_KEY = GLOBAL_CONFIG[:rest_auth_site_key]
+  REST_AUTH_SITE_KEY = CONFIG[:rest_auth_site_key]
 end
   
 # Repeated applications of the hash make brute force (even with a compromised
