@@ -17,6 +17,7 @@ module ApplicationHelper
  
  def streamlined_top_menus
    [
+    ["View site", home_path],
     ["Manage Users", {:controller=>"admin/user"}]
    ]
  end
