@@ -2,6 +2,7 @@
 class SessionsController < ApplicationController
   # Be sure to include AuthenticationSystem in Application Controller instead
   include AuthenticatedSystem
+  before_filter :check_no_users, :only=>[:new]
 
   # render new.rhtml
   def new
@@ -39,5 +40,9 @@ protected
   def note_failed_signin
     flash[:error] = "Couldn't log you in as '#{params[:login]}'"
     logger.warn "Failed login for '#{params[:login]}' from #{request.remote_ip} at #{Time.now.utc}"
+  end
+  
+  def check_no_users
+    redirect_to signup_path if User.count.zero?
   end
 end

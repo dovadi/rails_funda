@@ -48,22 +48,6 @@ describe AccessControlTestController do
     ActionController::Routing::Routes.add_route '/login_is_required',           :controller => 'access_control_test',   :action => 'login_is_required'
     ActionController::Routing::Routes.add_route '/login_not_required',          :controller => 'access_control_test',   :action => 'login_not_required'
   end
-  describe "Requesting site for the first time" do
-    it 'should not redirect to signup if users exists' do
-      get 'login_not_required'
-      response.should_not redirect_to(signup_path)
-    end
-    it 'should not redirect to signup if logged' do
-      User.authenticate('quentin', 'monkey')
-      get 'login_not_required'
-      response.should_not redirect_to(signup_path)
-    end
-    it 'should redirect to signup if no users' do
-      User.delete_all
-      get 'login_not_required'
-      response.should redirect_to(signup_path)
-    end
-  end
   ACCESS_CONTROL_FORMATS.each do |format, success_text|
     ACCESS_CONTROL_AM_I_LOGGED_IN.each do |logged_in_status, user_login|
       ACCESS_CONTROL_IS_LOGIN_REQD.each do |login_reqd_status|

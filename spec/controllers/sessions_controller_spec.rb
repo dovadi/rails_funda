@@ -14,6 +14,14 @@ describe SessionsController do
   def do_create
     post :create, @login_params
   end
+  describe "on login as very first user" do
+    it "should redirect to signup" do
+      User.delete_all
+      get :new
+      response.should be_redirect
+      response.should redirect_to(signup_path) 
+    end
+  end
   describe "on successful login," do
     [ [:nil,       nil,            nil],
       [:expired,   'valid_token',  15.minutes.ago],
