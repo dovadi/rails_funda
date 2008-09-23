@@ -17,6 +17,7 @@ global:
   rest_auth_site_key: 799c2fa0bb1963019800cf82cf984eca
 test: 
   site_url: http://test.host
+  redirect_to_login_when_no_access: true
 production: 
   site_url: http://www.example.com
   admin_email: donotrepy@example.com
