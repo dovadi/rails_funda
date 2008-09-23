@@ -165,7 +165,7 @@ describe UsersController do
     user = users(:quentin)
     login_as :quentin
     old_pass = user.crypted_password.dup
-    post :change_password, :id=>user.id, :new_password=>'animal', :user =>{:password=>'monkey', :password_confirmation=>'animal'}
+    post :change_password, :id=>user.id, :old_password=>'monkey', :user =>{:password=>'animal', :password_confirmation=>'animal'}
     user.reload
     user.crypted_password.should_not == old_pass
     User.authenticate(user.login, 'animal').should_not be_nil
@@ -175,7 +175,7 @@ describe UsersController do
   it 'should not update password with wrong old password provided' do
     user = users(:quentin)
     old_pass = user.crypted_password.dup
-    post :change_password, :id=>user.id, :new_password=>'animal', :user =>{:password=>'monkey23', :password_confirmation=>'animal'}
+    post :change_password, :id=>user.id, :old_password=>'monkey23', :user =>{:password=>'animal', :password_confirmation=>'animal'}
     user.reload
     user.crypted_password.should == old_pass
     User.authenticate(user.login, 'animal').should be_nil
@@ -185,7 +185,7 @@ describe UsersController do
   it 'should not update password with empty new password provided' do
     user = users(:quentin)
     old_pass = user.crypted_password.dup
-    post :change_password, :id=>user.id, :new_password=>'', :user =>{:password=>'monkey', :password_confirmation=>''}
+    post :change_password, :id=>user.id, :old_password=>'monkey', :user =>{:password=>'', :password_confirmation=>''}
     user.reload
     user.crypted_password.should == old_pass
     User.authenticate(user.login, 'animal').should be_nil
@@ -195,7 +195,7 @@ describe UsersController do
   it 'should not update password with wrong confirmation for new password' do
     user = users(:quentin)
     old_pass = user.crypted_password.dup
-    post :change_password, :id=>user.id, :new_password=>'manilosa', :user =>{:password=>'monkey', :password_confirmation=>'maniloso'}
+    post :change_password, :id=>user.id, :old_password=>'monkey', :user =>{:password=>'manilosa', :password_confirmation=>'maniloso'}
     user.reload
     user.crypted_password.should == old_pass
     User.authenticate(user.login, 'animal').should be_nil
