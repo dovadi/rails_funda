@@ -61,9 +61,8 @@ class UsersController < ApplicationController
   end
   
   def change_password
-    user = User.authenticate(@user.login, params[:user][:password])
+    user = User.authenticate(@user.login, params[:old_password])
     if user
-      params[:user][:password] = params[:new_password]
       if !params[:user][:password].blank? && !params[:user][:password_confirmation].blank? && @user.update_attributes(params[:user])
         flash[:success] = "Your password is changed."
         redirect_to home_path
