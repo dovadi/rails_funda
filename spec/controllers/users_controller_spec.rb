@@ -6,7 +6,18 @@ include AuthenticatedTestHelper
 
 describe UsersController do
   fixtures :users
-
+  fixtures :roles
+  fixtures :roles_users
+  
+  it 'add admin role for first user after activation' do
+    User.delete_all
+    create_user
+    user = User.find_by_login('quire')
+    get :activate, :activation_code => user.activation_code
+    user.reload
+    user.has_role?("admin").should == true
+  end
+  
   it 'allows signup' do
     lambda do
       create_user
@@ -87,19 +98,31 @@ describe UsersController do
 
   it 'does suspend an user' do
     user = users(:quentin)
+    login_as :admin
     get :suspend, {:id=>user.id} 
     user.reload
     user.state.should == "suspended"
     response.should be_redirect
     response.should redirect_to(users_path)
   end
+  
+   it 'does not suspend an user if not admin' do
+    user = users(:quentin)
+    login_as :quentin
+    get :suspend, {:id=>user.id} 
+    user.reload
+    user.state.should_not == "suspended"
+    response.should be_redirect
+    response.should redirect_to(new_session_path)
+  end
 
   it 'does unsuspend an user' do
+    login_as :admin
     user = users(:quentin)
     user.state = 'suspended'
     user.save
-
-    get :unsuspend, {:id=>user.id}, {:user=>users}
+    
+    get :unsuspend, {:id=>user.id}
     user.reload
     user.state.should == "active"
     response.should be_redirect
@@ -109,6 +132,7 @@ describe UsersController do
   it 'does purge an user' do
     lambda do
       user = users(:quentin)
+      login_as :admin
       get :purge, {:id=>user.id}
       response.should be_redirect
       response.should redirect_to(users_path)      
@@ -118,6 +142,7 @@ describe UsersController do
   it 'does delete an user with provided password' do
     lambda do
       user = users(:aaron)
+      login_as :aaron
       delete 'destroy',:id=>user.id, :password=>'monkey'
       user.reload
       user.state.should == "deleted"
@@ -129,6 +154,7 @@ describe UsersController do
   it 'does not delete an user with wrong password' do
     lambda do
       user = users(:aaron)
+      login_as :aaron
       delete 'destroy',:id=>user.id, :password=>'monkey23'
       user.reload
       user.state.should_not == "deleted"
@@ -138,6 +164,7 @@ describe UsersController do
   
   it 'should update account info' do
     user = users(:quentin)
+    login_as :quentin
     put :update, :id=>user.id, :user =>{:login=>'quentin_new', :email=>"fentoso@mambori.com"}
     user.reload
     user.login.should == "quentin_new"
@@ -154,8 +181,17 @@ describe UsersController do
     flash[:notice].should_not be_nil
   end
   
+  it 'should show edit form for other user when user is admin' do
+    user = users(:quentin)
+    login_as :admin
+    get :edit, :id=>user.id
+    response.should_not be_redirect
+    flash[:notice].should be_nil
+  end
+  
   it 'should not update account info when wrong data' do
     user = users(:quentin)
+    login_as :quentin
     put :update, :id=>user.id, :user =>{:login=>'l og in', :email=>"floso $ compo mero"}
     response.should render_template("users/edit")
     flash[:error ].should_not be_nil
@@ -163,6 +199,7 @@ describe UsersController do
   
   it 'should update password with old password provided' do
     user = users(:quentin)
+    login_as :quentin
     login_as :quentin
     old_pass = user.crypted_password.dup
     post :change_password, :id=>user.id, :old_password=>'monkey', :user =>{:password=>'animal', :password_confirmation=>'animal'}
@@ -174,6 +211,7 @@ describe UsersController do
   
   it 'should not update password with wrong old password provided' do
     user = users(:quentin)
+    login_as :quentin
     old_pass = user.crypted_password.dup
     post :change_password, :id=>user.id, :old_password=>'monkey23', :user =>{:password=>'animal', :password_confirmation=>'animal'}
     user.reload
@@ -184,6 +222,7 @@ describe UsersController do
   
   it 'should not update password with empty new password provided' do
     user = users(:quentin)
+    login_as :quentin
     old_pass = user.crypted_password.dup
     post :change_password, :id=>user.id, :old_password=>'monkey', :user =>{:password=>'', :password_confirmation=>''}
     user.reload
@@ -194,6 +233,7 @@ describe UsersController do
   
   it 'should not update password with wrong confirmation for new password' do
     user = users(:quentin)
+    login_as :quentin
     old_pass = user.crypted_password.dup
     post :change_password, :id=>user.id, :old_password=>'monkey', :user =>{:password=>'manilosa', :password_confirmation=>'maniloso'}
     user.reload

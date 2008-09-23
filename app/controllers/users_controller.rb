@@ -3,7 +3,8 @@ class UsersController < ApplicationController
   # Protect these actions behind an admin login
   #before_filter :admin_required, :only => [:suspend, :unsuspend, :destroy, :purge]
   before_filter :find_user, :only => [:suspend, :unsuspend, :destroy, :purge, :edit, :update, :change_password]
-  
+  require_role "admin", :only => [:edit, :update, :change_password, :destroy], :unless =>"@user == current_user"
+  require_role "admin", :only => [:suspend, :unsuspend, :purge]
 
   # render new.rhtml
   def new
@@ -13,11 +14,22 @@ class UsersController < ApplicationController
   def create
     logout_keeping_session!
     @user = User.new(params[:user])
-    @user.register! if @user && @user.valid?
+    activate_now = (CONFIG[:no_activation_for_first_user] and User.count.zero?)
+    if @user && @user.valid?
+      @user.register! 
+      if activate_now
+        @user.roles << (Role.find_by_name('admin') or Role.create!(:name=>'admin'))
+        @user.activate!  
+      end
+    end
     success = @user && @user.valid?
     if success && @user.errors.empty?
       redirect_back_or_default('/')
-      flash[:notice] = "Thanks for signing up!  We're sending you an email with your activation code."
+      if activate_now
+        flash[:notice] = "Signup complete! Please sign in to continue."
+      else
+        flash[:notice] = "Thanks for signing up!  We're sending you an email with your activation code."  
+      end
     else
       flash[:error]  = "We couldn't set up that account, sorry.  Please try again, or contact an admin (link is above)."
       render :action => 'new'
@@ -43,10 +55,7 @@ class UsersController < ApplicationController
   end
   
   def edit
-    unless @user==current_user # TODO: add check for admin role
-      flash[:notice] = "You can not edit this account."
-      redirect_to home_path
-    end
+
   end
   
   def update

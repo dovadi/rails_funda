@@ -109,10 +109,11 @@ module RoleRequirementSystem
     end
     
     def access_denied
-      if logged_in?
+      if logged_in? and not CONFIG[:redirect_to_login_when_no_access]
         render :nothing => true, :status => 401
         return false
       else
+        flash[:notice] = "Sorry , you have no permission to do this" if logged_in? and CONFIG[:redirect_to_login_when_no_access]
         super
       end
     end
