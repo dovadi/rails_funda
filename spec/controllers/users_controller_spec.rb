@@ -200,7 +200,6 @@ describe UsersController do
   it 'should update password with old password provided' do
     user = users(:quentin)
     login_as :quentin
-    login_as :quentin
     old_pass = user.crypted_password.dup
     post :change_password, :id=>user.id, :old_password=>'monkey', :user =>{:password=>'animal', :password_confirmation=>'animal'}
     user.reload

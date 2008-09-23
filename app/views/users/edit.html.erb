@@ -19,11 +19,13 @@
 <% form_for :user, :url => {:action=>:change_password, :id=>@user.id}, :html=>{:method=>:put} do |f| -%>
 <% @user.password = @user.password_confirmation = nil %>
 <h3>Change password</h3>
-<p><%= label_tag 'user_password', "Old Password" %><br/>
+<p><%= label_tag 'user_old_password', "Old Password" %><br/>
+<input class="text" id="user_old_password" name="old_password" size="30" type="password" />
+</p>
+
+<p><%= label_tag 'user_password', "New password" %><br/>
 <%= f.password_field :password, :class=>"text" %></p>
 
-<p><%= label_tag 'user_new_password', "New password" %><br/>
-<input class="text" id="user_new_password" name="new_password" size="30" type="password" />
 </p>
 
 
