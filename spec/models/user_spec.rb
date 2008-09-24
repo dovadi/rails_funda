@@ -159,12 +159,20 @@ describe User do
   # Authentication
   #
 
-  it 'authenticates user' do
+  it 'authenticates user with login' do
     User.authenticate('quentin', 'monkey').should == users(:quentin)
   end
+  
+  it 'authenticates user with email' do
+    User.authenticate('quentin@example.com', 'monkey').should == users(:quentin)
+  end
 
-  it "doesn't authenticate user with bad password" do
+  it "doesn't authenticate user with bad password and login" do
     User.authenticate('quentin', 'invalid_password').should be_nil
+  end
+  
+  it "doesn't authenticate user with bad password and email" do
+    User.authenticate('quentin@example.com', 'invalid_password').should be_nil
   end
 
  if REST_AUTH_SITE_KEY.blank?
