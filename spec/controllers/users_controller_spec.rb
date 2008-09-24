@@ -5,9 +5,7 @@ require File.dirname(__FILE__) + '/../spec_helper'
 include AuthenticatedTestHelper
 
 describe UsersController do
-  fixtures :users
-  fixtures :roles
-  fixtures :roles_users
+  fixtures :users, :roles, :roles_users 
   
   it 'add admin role for first user after activation' do
     User.delete_all
@@ -15,7 +13,7 @@ describe UsersController do
     user = User.find_by_login('quire')
     get :activate, :activation_code => user.activation_code
     user.reload
-    user.has_role?("admin").should == true
+    user.has_role?("admin").should be_true
   end
   
   it 'allows signup' do
