@@ -17,3 +17,23 @@ div.fieldWithErrors textarea{	border : 1px solid #FFB3BC;}
 .height100{height:100px;}
 
 .tb-margin10{margin : 10px 0;}
+
+/* Styling for disabled javascript notification */
+div.javascript_disabled_notification {
+background:#FFFFFF none repeat scroll 0 0;
+margin:30px auto;
+width:520px;
+}
+div.javascript_disabled_notification div.inner {
+padding:20px;
+text-align:left;
+}
+div.javascript_disabled_notification h1 {
+font-size:18px;
+margin:0 0 18px;
+}
+div.javascript_disabled_notification p {
+font-size:14px;
+line-height:140%;
+margin:0 0 14px;
+}
