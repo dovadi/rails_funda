@@ -63,7 +63,7 @@ module ActiveRecord
           configuration[:maximum] = range.end
         end
         if type == :confirmation
-          configuration[:match] = self.to_s.underscore + '_' + attr_name.to_s + '_confirmation'
+          configuration[:match] = self.to_s.underscore + '_' + attr_name.to_s
         end
         configuration[:validMessage] ||= ''
         configuration.reject {|k, v| v.nil? }

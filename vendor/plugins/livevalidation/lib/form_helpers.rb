@@ -34,11 +34,19 @@ module ActionView
       end
       
       def initialize_validator(field_name)
-        "var #{field_name} = new LiveValidation('#{field_name}');"
+        res = "var #{field_name} = new LiveValidation('#{field_name}');"
+        if field_name.include?('_confirmation')
+          configuration = {}
+          configuration[:match] = field_name.gsub('_confirmation', '')
+          res << "#{field_name}.add(#{ActiveRecord::Validations::VALIDATION_METHODS[:confirmation]}" + ( configuration ? ", #{configuration.to_json}" : '') + ');'
+        end
+        res
       end
       
       def live_validation_code(field_name, type, configuration)
-        "#{field_name}.add(#{ActiveRecord::Validations::VALIDATION_METHODS[type]}" + ( configuration ? ", #{configuration.to_json}" : '') + ')'
+        if !field_name.include?('_confirmation') && type != :confirmation
+          "#{field_name}.add(#{ActiveRecord::Validations::VALIDATION_METHODS[type]}" + ( configuration ? ", #{configuration.to_json}" : '') + ')'
+        end
       end
       
       def script_tags(js_code = '')

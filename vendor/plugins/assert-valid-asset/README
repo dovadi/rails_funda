@@ -1,0 +1,119 @@
+= assert_valid_asset plugin for Rails
+
+assert_valid_asset is a plugin to validate your (X)HTML and CSS using the W3C Validator 
+web service (http://validator.w3.org/) and the W3C CSS Validation Service 
+(http://jigsaw.w3.org/css-validator) as part of your functional or unit tests. 
+The css and html fragments are cached in $RAILS_ROOT/tmp/test/assets as are the results 
+from the web service. This means that your tests will not be slowed down unless the output 
+has changed.
+
+The code started life as a few modifications to Scott Raymond's assert_valid_markup
+(http://redgreenblu.com/svn/projects/assert_valid_markup/) and evolved to cache fragments
+and results in $RAILS_ROOT/tmp/test/assets rather than the system temp directory. Then the 
+ability to validate CSS files was added. I also added the ability to skip checks if the 
+"NONET" environment variable is set to "true". 
+
+A more recent version made it possible to display the content with the line numbers by
+adding a line such as "self.display_invalid_content = true" into test_helper.rb in the
+Test::Unit::TestCase class.
+
+The ability to automatically validate content generated as a result of a action can be enabled
+by adding the line "self.auto_validate = true" into test_helper.rb in the Test::Unit::TestCase
+class. This will generate content according to the mime type of content. (x)html will be passed
+to assert_valid_markup and css will be passed to assert_valid_css. You can also exclude
+specific tests by putting them into an an auto_validate_excludes or instead can choose to only
+include tests in list auto_validate_includes.
+
+i.e. The following will automatically validate content generated in the test_foo and test_bar tests.
+
+    class Test::Unit::TestCase
+      self.auto_validate = true
+    end
+
+    class FooControllerTest < Test::Unit::TestCase
+
+      self.auto_validate_excludes = [:test_baz]
+
+      def test_foo; ... ; end
+      def test_bar; ... ; end
+      def test_baz; ... ; end
+    end
+
+i.e. The following will automatically validate content generated in the test_baz test.
+
+    class Test::Unit::TestCase
+      self.auto_validate = true
+    end
+
+    class FooControllerTest < Test::Unit::TestCase
+
+      self.auto_validate_includes = [:test_baz]
+
+      def test_foo; ... ; end
+      def test_bar; ... ; end
+      def test_baz; ... ; end
+    end
+
+
+== HowTo Validate (X)HTML
+
+  # Calling the assertion with no parameters validates whatever is in @request.body,
+  # which is automatically set by the existing get/post/etc helpers. For example:
+
+    class FooControllerTest < Test::Unit::TestCase
+      def test_bar_markup
+        get :bar
+        assert_valid_markup
+      end
+    end
+
+  # Add a string parameter to the assertion to validate any random fragment. For example:
+
+    class FooControllerTest < Test::Unit::TestCase
+      def test_bar_markup
+        assert_valid_markup "<div>Hello, world.</div>"
+      end
+    end
+
+  # For the ultimate in convenience, use the class-level method to validate a slew of
+  # actions in one line. Par exemple:
+
+    class FooControllerTest < Test::Unit::TestCase
+      assert_valid_markup :bar, :baz, :qux
+    end
+
+== HowTo Validate CSS
+
+  # Pass a string parameter to the assertion to validate a css fragment. For example:
+
+    class FooControllerTest < Test::Unit::TestCase
+      def test_bar_css
+        assert_valid_css(File.open("#{RAILS_ROOT}/public/stylesheets/bar.css",'rb').read)
+      end
+    end
+
+  # For the ultimate in convenience, use the class-level method to validate a slew of
+  # css files in one line. Assumes that the CSS files are relative to 
+  # $RAILS_ROOT/public/stylesheets/ and end with '.css'. The following example validates 
+  # $RAILS_ROOT/public/stylesheets/layout.css, $RAILS_ROOT/public/stylesheets/standard.css
+  # and $RAILS_ROOT/public/stylesheets/theme.css
+
+    class FooControllerTest < Test::Unit::TestCase
+      assert_valid_css_files 'layout', 'standard', 'theme'
+    end
+
+== Details
+
+License: Released under the MIT license.
+Latest Version: http://www.realityforge.org/svn/public/code/assert-valid-asset/trunk/
+
+== Credits
+
+Scott Raymond <sco@scottraymond.net> for the initial version. 
+Peter Donald <peter at realityforge dot org> to add validation of CSS files and fix caching.
+Simon Stapleton for inspiration to add who added support display_invalid_content.
+Clifford T. Matthews fix for ruby 1.8.5 and configuration of server endpoints.
+Tomasz Wegrzanowski for replacing class variables with class_inheritable_accessor.
+Cédric Deltheil for ensuring process_with_auto_validate returns the response.
+Nick Plante for fixing css validation.
+
