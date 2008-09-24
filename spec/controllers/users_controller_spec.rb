@@ -7,6 +7,7 @@ include AuthenticatedTestHelper
 describe UsersController do
   fixtures :users, :roles, :roles_users 
   
+  
   it 'add admin role for first user after activation' do
     User.delete_all
     create_user
@@ -15,6 +16,19 @@ describe UsersController do
     user.reload
     user.has_role?("admin").should be_true
   end
+  
+  it 'should send only welcome mail to first user without confirmation' do
+    lambda do
+      CONFIG[:no_activation_for_first_user] = true
+      User.delete_all
+      create_user
+      sent = ActionMailer::Base.deliveries.first
+      assert sent.body =~ /your account has been activated/
+    end.should change(ActionMailer::Base.deliveries, :length).by(1)
+  end
+  
+  
+  
   
   it 'allows signup' do
     lambda do
