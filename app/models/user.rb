@@ -65,6 +65,15 @@ class User < ActiveRecord::Base
   def self.states
     ["pending", "passive", "active", "suspended", "deleted"]
   end
+  
+  def register
+    activate_now = (CONFIG[:no_activation_for_first_user] and User.count==0)
+    register!
+    if activate_now
+      roles << (Role.find_by_name('admin') or Role.create!(:name=>'admin'))
+      activate!  
+    end
+  end
 
   protected
     

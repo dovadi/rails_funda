@@ -15,18 +15,13 @@ class UsersController < ApplicationController
   def create
     logout_keeping_session!
     @user = User.new(params[:user])
-    activate_now = (CONFIG[:no_activation_for_first_user] and User.count.zero?)
     if @user && @user.valid?
-      @user.register! 
-      if activate_now
-        @user.roles << (Role.find_by_name('admin') or Role.create!(:name=>'admin'))
-        @user.activate!  
-      end
+      @user.register
     end
     success = @user && @user.valid?
     if success && @user.errors.empty?
       redirect_back_or_default('/')
-      if activate_now
+      if @user.active?
         flash[:notice] = "Signup complete! Please sign in to continue."
       else
         flash[:notice] = "Thanks for signing up!  We're sending you an email with your activation code."  
