@@ -21,3 +21,5 @@ var LiveValidationFix = {
 }
 LiveValidationFix.Format = Validate.Format;
 Validate.Format = LiveValidationFix.FormatFix;
+
+$j = jQuery.noConflict();

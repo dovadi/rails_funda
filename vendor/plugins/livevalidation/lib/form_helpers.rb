@@ -34,7 +34,7 @@ module ActionView
       end
       
       def initialize_validator(field_name)
-        res = "var #{field_name} = new LiveValidation('#{field_name}');"
+        res = "var #{field_name} = new LiveValidation('#{field_name}', {onlyOnBlur:true});"
         if field_name.include?('_confirmation')
           configuration = {}
           configuration[:match] = field_name.gsub('_confirmation', '')
@@ -42,11 +42,28 @@ module ActionView
         end
         res
       end
+
+
       
       def live_validation_code(field_name, type, configuration)
         if !field_name.include?('_confirmation') && type != :confirmation
-          "#{field_name}.add(#{ActiveRecord::Validations::VALIDATION_METHODS[type]}" + ( configuration ? ", #{configuration.to_json}" : '') + ')'
+          res = "#{field_name}.add(#{ActiveRecord::Validations::VALIDATION_METHODS[type]}" + ( configuration ? ", #{configuration.to_json}" : '') + ')'
         end
+        
+        if type == :uniqueness
+          name_array = field_name.split('_')
+          name_array.delete_at(0)
+          name = name_array.collect{|el| el.capitalize}.join(' ')
+          res = "#{field_name}.add(#{ActiveRecord::Validations::VALIDATION_METHODS[type]}," +
+            "{against: function(value,args) {" +
+            "var #{field_name}_available;" +
+            "new Ajax.Request('/#{params[:controller]}/check_#{field_name}', {asynchronous: false, onSuccess: function(transport) {" +
+            "#{field_name}_available = transport.responseText;}," +
+            "parameters: {value: $('#{field_name}').value}});" +
+            "if (#{field_name}_available=='taken') return false; else return true;}, " +
+            "failureMessage: '#{name} is taken.'}" + ')'
+        end
+        res
       end
       
       def script_tags(js_code = '')

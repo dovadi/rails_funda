@@ -13,7 +13,8 @@ module ActiveRecord
       :format => "Validate.Format",
       :length => "Validate.Length",
       :acceptance => "Validate.Acceptance",
-      :confirmation => "Validate.Confirmation"
+      :confirmation => "Validate.Confirmation",
+      :uniqueness => "Validate.Custom"
     }
 
 
@@ -65,6 +66,7 @@ module ActiveRecord
         if type == :confirmation
           configuration[:match] = self.to_s.underscore + '_' + attr_name.to_s
         end
+        
         configuration[:validMessage] ||= ''
         configuration.reject {|k, v| v.nil? }
       end

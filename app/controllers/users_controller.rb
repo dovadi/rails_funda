@@ -5,6 +5,7 @@ class UsersController < ApplicationController
   before_filter :find_user, :only => [:suspend, :unsuspend, :destroy, :purge, :edit, :update, :change_password]
   require_role "admin", :only => [:edit, :update, :change_password, :destroy], :unless =>"@user == current_user"
   require_role "admin", :only => [:suspend, :unsuspend, :purge]
+  protect_from_forgery :except => [:check_user_login, :check_user_email]
 
   # render new.rhtml
   def new
@@ -111,6 +112,25 @@ class UsersController < ApplicationController
   def purge
     @user.destroy
     redirect_to users_path
+  end
+  
+  # action for ajax validations
+  def check_user_login
+    usr = User.find_by_login(params[:value])
+    if current_user
+      render :text=> (usr && current_user != usr) ? 'taken' : nil
+    else
+      render :text=> usr ? 'taken' : nil
+    end
+  end
+  
+  def check_user_email
+    usr = User.find_by_email(params[:value])
+    if current_user
+      render :text=> (usr && current_user != usr) ? 'taken' : nil
+    else
+      render :text=> usr ? 'taken' : nil
+    end
   end
   
   # There's no page here to update or destroy a user.  If you add those, be
