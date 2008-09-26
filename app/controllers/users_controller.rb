@@ -109,24 +109,21 @@ class UsersController < ApplicationController
     redirect_to users_path
   end
   
-  # action for ajax validations
-  def check_user_login
-    usr = User.find_by_login(params[:value])
-    if current_user
-      render :text=> (usr && current_user != usr) ? 'taken' : nil
+  # action for livevalidations
+  def show
+    case params[:id]
+    when "check_user_login"
+      new_user = User.find_by_login(params[:value])
+    when "check_user_email"
+      new_user = User.find_by_email(params[:value])
+    end
+    if current_user #in case user is editing its profile
+      render :text=> (new_user && current_user != new_user) ? 'taken' : nil
     else
-      render :text=> usr ? 'taken' : nil
+      render :text=> new_user ? 'taken' : nil
     end
   end
   
-  def check_user_email
-    usr = User.find_by_email(params[:value])
-    if current_user
-      render :text=> (usr && current_user != usr) ? 'taken' : nil
-    else
-      render :text=> usr ? 'taken' : nil
-    end
-  end
   
   # There's no page here to update or destroy a user.  If you add those, be
   # smart -- make sure you check that the visitor is authorized to do so, that they

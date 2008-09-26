@@ -38,10 +38,11 @@ and enabling it only for some fields:
 
     <%= f.text_field :name, :live => true %>
 
-if field has validates_uniqueness then in controller that shows the form should be added method for check:
-method should return 'taken' if value is not uniq and nil otherwise.
- def check_<model>_<field>
- end    
+== Live validations for validates_uniqueness_of
+
+If a record has a field with validates_uniqueness_of then in the controller that renders the form a method should be added for checking the uniqueness of this field.
+This method (with the format check_<model>_<field>) should return 'taken' if value is not unique and nil otherwise.
+
 For example:
 class User < ActiveRecord::Base
 	...
@@ -50,17 +51,39 @@ class User < ActiveRecord::Base
 end
 
 class UsersController < ApplicationController 
-	...
-	def check_user_login
-    usr = User.find_by_login(params[:value])
-    if current_user
-      render :text=> (usr && current_user != usr) ? 'taken' : nil
-    else
-      render :text=> usr ? 'taken' : nil
-    end
+  ...
+  def check_user_login
+    new_user = User.find_by_login(params[:value])
+    render :text=> new_user ? 'taken' : nil
   end
   ...
-end  
+end
+
+If you want to follow a more restful style than it will be something like this (don't forget to adjust your routes).
+
+class UsersController < ApplicationController 
+ ...
+ def show
+   if  params[:id] == "check_user_login"
+     new_user = User.find_by_login(params[:value]) 
+     render :text=> new_user ? 'taken' : nil
+   end
+ end
+  ...
+end
+
+In case of editing you should take special care of the response and tweak your method, because in that case a specific field is allowed to be the same. So the method can be:
+
+def show
+   if  params[:id] == "check_user_login"
+     new_user = User.find_by_login(params[:value]) 
+     if current_user #in case user is editing its profile
+       render :text=> (new_user && current_user != new_user) ? 'taken' : nil
+     else
+       render :text=> new_user ? 'taken' : nil
+     end
+   end
+end
 
 == Supported validations
 

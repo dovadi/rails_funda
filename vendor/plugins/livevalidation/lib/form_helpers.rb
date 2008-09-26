@@ -42,8 +42,6 @@ module ActionView
         end
         res
       end
-
-
       
       def live_validation_code(field_name, type, configuration)
         if !field_name.include?('_confirmation') && type != :confirmation
@@ -57,7 +55,7 @@ module ActionView
           res = "#{field_name}.add(#{ActiveRecord::Validations::VALIDATION_METHODS[type]}," +
             "{against: function(value,args) {" +
             "var #{field_name}_available;" +
-            "new Ajax.Request('/#{params[:controller]}/check_#{field_name}', {asynchronous: false, onSuccess: function(transport) {" +
+            "new Ajax.Request('/#{params[:controller]}/check_#{field_name}', {method:'get',asynchronous: false, onSuccess: function(transport) {" +
             "#{field_name}_available = transport.responseText;}," +
             "parameters: {value: $('#{field_name}').value}});" +
             "if (#{field_name}_available=='taken') return false; else return true;}, " +

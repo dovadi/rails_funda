@@ -6,7 +6,7 @@ ActionController::Routing::Routes.draw do |map|
   map.signup '/signup', :controller => 'users', :action => 'new'
   map.activate '/activate/:activation_code', :controller => 'users', :action => 'activate', :activation_code => nil 
  
-  map.resources :users, :member => { :suspend => :put, :unsuspend => :put, :purge => :delete }  
+  map.resources :users, :member => { :suspend => :put, :unsuspend => :put, :purge => :delete, :check_user_login=>:get, :check_user_email=>:get}  
   map.resource :session
    
   map.with_options(:controller => 'home', :conditions=>{ :subdomain => /^(?!www)/ }) do |home|
