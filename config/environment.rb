@@ -30,11 +30,9 @@ Rails::Initializer.run do |config|
 
   # Specify gems that this application depends on. 
   # They can then be installed with "rake gems:install" on new installations.
-  # config.gem "bj"
-  # config.gem "hpricot", :version => '0.6', :source => "http://code.whytheluckystiff.net"
-  # config.gem "aws-s3", :lib => "aws/s3"
   config.gem "rubyist-aasm", :lib => "aasm" ,  :source => "http://gems.github.com/"
   config.gem "spicycode-rcov",:lib=>"rcov", :source => "http://gems.github.com/"
+  config.gem 'mbleigh-subdomain-fu', :lib => "subdomain-fu", :source => "http://gems.github.com"
 
   # Only load the plugins named here, in the order given. By default, all plugins 
   # in vendor/plugins are loaded in alphabetical order.
@@ -62,6 +60,7 @@ Rails::Initializer.run do |config|
     :secret      => CONFIG[:secret_for_sessions]#'00b09871ac6f25601ec4a6cc5ed28da73d1633a12e3f44a32ab90151c6842bcf46eceb9b37445846ba87c3005b425656c18c8442a53f44b8591f32e1f6db971a'
   }
 
+ 
   # Use the database for sessions instead of the cookie-based default,
   # which shouldn't be used to store highly confidential information
   # (create the session table with "rake db:sessions:create")
@@ -76,3 +75,7 @@ Rails::Initializer.run do |config|
   # config.active_record.observers = :cacher, :garbage_collector
   config.active_record.observers = :user_observer
 end
+
+SubdomainFu.tld_sizes = { :development => 1,
+                           :test => 1,
+                           :production => 1 }
