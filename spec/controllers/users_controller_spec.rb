@@ -27,9 +27,6 @@ describe UsersController do
     end.should change(ActionMailer::Base.deliveries, :length).by(1)
   end
   
-  
-  
-  
   it 'allows signup' do
     lambda do
       create_user

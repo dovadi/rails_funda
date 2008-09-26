@@ -8,6 +8,13 @@ config.cache_classes = false
 # Log error messages when you accidentally call methods on nil.
 config.whiny_nils = true
 
+config.action_controller.session = {
+   :session_key => '_rails_funda_session',
+   :secret      => CONFIG[:secret_for_sessions],#'00b09871ac6f25601ec4a6cc5ed28da73d1633a12e3f44a32ab90151c6842bcf46eceb9b37445846ba87c3005b425656c18c8442a53f44b8591f32e1f6db971a'
+   :session_domain => ".local.host"
+}
+
+
 # Show full error reports and disable caching
 config.action_controller.consider_all_requests_local = true
 config.action_view.debug_rjs                         = true

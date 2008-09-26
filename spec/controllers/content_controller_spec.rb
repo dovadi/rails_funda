@@ -8,7 +8,7 @@ describe ContentController do
   it 'redirects when logged in' do
     login_as :quentin
     get :index
-    response.should be_redirect
+    response.should be_success
   end
   
   it 'shows when not logged in' do

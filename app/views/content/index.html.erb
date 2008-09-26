@@ -1,5 +1,10 @@
-<%content_for(:title, "Welcome") %>
+
+<%content_for(:title, "Welcome to the main page") %>
 <div class='height100'>
-<h4>Hello Guest!</h4> 
-Would you be so kind to <%= link_to "log in",  login_path,  { :title => "Log in" } %> or <%= link_to "sign up", signup_path, { :title => "Create an account" } %>.
+	<% if logged_in? %>
+		<p>Hello <%= current_user.login %>, you now see different content on the main page because you're logged in. </p>
+	<% else %>
+		<h4>Hello Guest!</h4> 
+		Would you be so kind to <%= link_to "log in",  login_path,  { :title => "Log in" } %> or <%= link_to "sign up", signup_path, { :title => "Create an account" } %>.
+	<% end %>
 </div>

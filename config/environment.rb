@@ -55,11 +55,6 @@ Rails::Initializer.run do |config|
   # If you change this key, all old sessions will become invalid!
   # Make sure the secret is at least 30 characters and all random, 
   # no regular words or you'll be exposed to dictionary attacks.
-  config.action_controller.session = {
-    :session_key => '_rails_funda_session',
-    :secret      => CONFIG[:secret_for_sessions]#'00b09871ac6f25601ec4a6cc5ed28da73d1633a12e3f44a32ab90151c6842bcf46eceb9b37445846ba87c3005b425656c18c8442a53f44b8591f32e1f6db971a'
-  }
-
  
   # Use the database for sessions instead of the cookie-based default,
   # which shouldn't be used to store highly confidential information
@@ -75,7 +70,3 @@ Rails::Initializer.run do |config|
   # config.active_record.observers = :cacher, :garbage_collector
   config.active_record.observers = :user_observer
 end
-
-SubdomainFu.tld_sizes = { :development => 1,
-                           :test => 1,
-                           :production => 1 }
