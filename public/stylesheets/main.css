@@ -1,4 +1,5 @@
-a#home_page {text-decoration: none;}
+.span-20 a.logo {display: block; width: 250px; height: 74px; background: url(/images/logo_rails_funda.png) no-repeat;}
+
 /* Errors */
 .errorExplanation{background-color : #FFE6E6; padding : 6px; font-size : 0.9em;}
 .errorExplanation h2{font-size : 1.2em; color : #9A0000;}
