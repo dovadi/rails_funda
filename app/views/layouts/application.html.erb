@@ -49,11 +49,10 @@
       </div>  
       <hr />
       <%=flash_helper%>
-      <div class="span-6">
-        <%left = (yield :left)%>
-        <%= left.blank? ? "&nbsp" : left%>
-      </div>
-      <div class="span-18 last">
+      
+      <%left = (yield :left)%>
+      <%= left.blank? ? "&nbsp" : left%>
+      <div class="span-24 last">
         <%=yield%>
       </div>
       <hr />

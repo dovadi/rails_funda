@@ -1,19 +1,25 @@
 <%content_for(:title, "Log in") %>
 <h1>Log In</h1>
-
 <% form_tag session_path do -%>
-<p><%= label_tag 'login', "Login or Email" %><br />
-<%= text_field_tag 'login', @login, :class=>"text" %></p>
-
-<p><%= label_tag 'password' %><br/>
-<%= password_field_tag 'password', nil, :class=>"text" %></p>
-
-
-<p><%= check_box_tag 'remember_me', '1', @remember_me %><%= label_tag 'remember_me', 'Remember me' %>
-</p>
-
-
-<p><%= submit_tag 'Log in' %></p>
-
-<p>Forgot password? <%=link_to "Recover it", remind_password_path%>.</p>
+  <fieldset class='form'>
+    <ol class="nospace form">
+      <li>
+        <%= label_tag 'login', "Login or Email" %><br />
+        <%= text_field_tag 'login', @login, :class=>"text" %>
+      </li>
+      <li>
+        <%= label_tag 'password' %><br/>
+        <%= password_field_tag 'password', nil, :class=>"text" %>
+      </li>
+      <li>
+        <%= check_box_tag 'remember_me', '1', @remember_me %><%= label_tag 'remember_me', 'Remember me' %>
+      </li>
+      <li>
+        <%= submit_tag 'Log in', :class=>"submit" %>
+      </li>
+      <li>
+        Forgot password? <%=link_to "Recover it", remind_password_path%>.
+      </li>
+    </ol>
+  </fieldset> 
 <% end -%>

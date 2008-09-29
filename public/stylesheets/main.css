@@ -25,3 +25,24 @@ div.javascript_disabled_notification {background:#FFFFFF none repeat scroll 0 0;
 div.javascript_disabled_notification div.inner {padding:20px;text-align:left;}
 div.javascript_disabled_notification h1 {font-size:18px;margin:0 0 18px;}
 div.javascript_disabled_notification p {font-size:14px;line-height:140%;margin:0 0 14px;}
+
+fieldset.form{
+  border : 15px solid #ddd;
+  background-color : #EAF5EF;
+}
+
+ol.form li{
+  clear:both;
+  padding-top : 10px;
+  list-style : none;
+}
+
+ol.form li input{
+  margin-top:0px;
+}
+
+ol.form label{
+  font-size : 1.2em;
+  color : #666;
+  margin-bottom : 0px;
+}
