@@ -36,7 +36,7 @@ Rails::Initializer.run do |config|
   config.gem "rubyist-aasm", :lib => "aasm" ,  :source => "http://gems.github.com/"
   config.gem "spicycode-rcov",:lib=>"rcov", :source => "http://gems.github.com/" unless RUBY_PLATFORM =~ /mswin32/
   config.gem 'mbleigh-subdomain-fu', :lib => "subdomain-fu", :source => "http://gems.github.com"  
-
+  config.gem 'thoughtbot-factory_girl', :lib => "factory_girl", :source => "http://gems.github.com"
   # Only load the plugins named here, in the order given. By default, all plugins 
   # in vendor/plugins are loaded in alphabetical order.
   # :all can be used as a placeholder for all plugins not explicitly named
@@ -77,3 +77,6 @@ Rails::Initializer.run do |config|
   # config.active_record.observers = :cacher, :garbage_collector
   config.active_record.observers = :user_observer
 end
+
+
+
