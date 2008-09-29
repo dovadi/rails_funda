@@ -1,0 +1,66 @@
+--- !ruby/object:Gem::Specification 
+name: mbleigh-subdomain-fu
+version: !ruby/object:Gem::Version 
+  version: 0.0.2
+platform: ruby
+authors: 
+- Michael Bleigh
+autorequire: 
+bindir: bin
+cert_chain: []
+
+date: 2008-06-25 00:00:00 +02:00
+default_executable: 
+dependencies: []
+
+description: SubdomainFu aims to solve the problem of subdomain-based routing and in a unified way, establishing simple conventions for linking between subdomains of a Rails app.
+email: michael@intridea.com
+executables: []
+
+extensions: []
+
+extra_rdoc_files: []
+
+files: 
+- MIT-LICENSE
+- README
+- init.rb
+- lib/subdomain_fu
+- lib/subdomain_fu/routing_extensions.rb
+- lib/subdomain_fu/url_rewriter.rb
+- lib/subdomain-fu.rb
+- rails/init.rb
+- spec/spec_helper.rb
+- spec/subdomain_fu_spec.rb
+- spec/url_rewriter_spec.rb
+- subdomain-fu.gemspec
+has_rdoc: true
+homepage: http://www.actsascommunity.com/projects/subdomain-fu
+post_install_message: 
+rdoc_options: 
+- --main
+- README
+require_paths: 
+- bin
+- lib
+required_ruby_version: !ruby/object:Gem::Requirement 
+  requirements: 
+  - - ">="
+    - !ruby/object:Gem::Version 
+      version: "0"
+  version: 
+required_rubygems_version: !ruby/object:Gem::Requirement 
+  requirements: 
+  - - ">="
+    - !ruby/object:Gem::Version 
+      version: "0"
+  version: 
+requirements: []
+
+rubyforge_project: 
+rubygems_version: 1.2.0
+signing_key: 
+specification_version: 2
+summary: Provides a simple solution for route handling and linking between subdomains in a Rails application.
+test_files: []
+

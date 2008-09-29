@@ -27,9 +27,6 @@ describe UsersController do
     end.should change(ActionMailer::Base.deliveries, :length).by(1)
   end
   
-  
-  
-  
   it 'allows signup' do
     lambda do
       create_user
@@ -259,6 +256,63 @@ describe UsersController do
       :password => 'quire69', :password_confirmation => 'quire69' }.merge(options)
   end
 
+end
+
+describe UsersController do
+  fixtures :users
+  
+  describe "with livevalidations on signup" do
+    it "response should be nil if login doesn't exists" do
+      get :show, :id=>"check_user_login", :value=>"quenti"
+      response.should be_success
+      response.body.should == ""
+    end
+    it "response should be taken if login already exists" do
+      get :show, :id=>"check_user_login", :value=>"quentin"
+      response.should be_success
+      response.body.should == "taken"
+    end
+    it "response should be nil if email doesn't exists" do
+      get :show, :id=>"check_user_email", :value=>"quenti@example.com"
+      response.should be_success
+      response.body.should == ""
+    end
+    it "response should be taken if email already exists" do
+      get :show, :id=>"check_user_email", :value=>"quentin@example.com"
+      response.should be_success
+      response.body.should == "taken"
+    end
+  end
+  
+  describe "with livevalidations on edit" do
+
+    before do
+      user = users(:quentin)
+      login_as :quentin
+    end
+
+    it "response should be nil if login doesn't exists" do
+      get :show, :id=>"check_user_login", :value=>"quenti"
+      response.should be_success
+      response.body.should == ""
+    end
+    it "response should be taken if login already exists" do
+      get :show, :id=>"check_user_login", :value=>"quentin"
+      response.should be_success
+      response.body.should == ""
+    end
+    it "response should be nil if email doesn't exists" do
+      get :show, :id=>"check_user_email", :value=>"quenti@example.com"
+      response.should be_success
+      response.body.should == ""
+    end
+    it "response should be taken if email already exists" do
+      get :show, :id=>"check_user_email", :value=>"quentin@example.com"
+      response.should be_success
+      response.body.should == ""
+    end
+  end
+   
 end
 
 describe UsersController do

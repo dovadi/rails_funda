@@ -42,7 +42,7 @@
 	
     <div class="container">
       <div class="span-20">
-        <h1><%=CONFIG[:site_title]%></h1>
+			<%= link_to "", main_url(:subdomain=>false),{:title=>"Bootstrap the web!", :alt=>"Bootstrap the web!", :class=>"logo"}%>
       </div>
       <div class="span-4 last">
         <%=render :partial=>"users/user_bar"%>

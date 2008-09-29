@@ -37,7 +37,7 @@
 <hr/>
 
 <div class='tb-margin10 cancel_action' id="cancel_link">
-  <%=link_to_function "Cancel my account", " $('.cancel_action').toggle();"%> <small>with confirmation</small>
+  <%=link_to_function "Cancel my account", "$j('.cancel_action').toggle();"%> <small>with confirmation</small>
 </div>  
 
 <div id='cancel_account' class='hide cancel_action'>
@@ -48,10 +48,10 @@
     <p>
       <%= label_tag 'password' %><br/>
       <%= password_field_tag 'password', nil, :class=>"text" %><br/>
-      <%=submit_tag "Delete my account", :action=>"destroy"%> or <%=link_to_function "Cancel", " $('.cancel_action').toggle();"%>
+      <%=submit_tag "Delete my account", :action=>"destroy"%> or <%=link_to_function "Cancel", " $j('.cancel_action').toggle();"%>
     </p>
   <%end%>
 </div>
 <%if flash[:not_deleted]%>
-  <script>$('.cancel_action').toggle();</script>
+  <script>$j('.cancel_action').toggle();</script>
 <%end%>
