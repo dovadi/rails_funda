@@ -53,7 +53,7 @@ class User < ActiveRecord::Base
     u = find_in_state :first, :active, :conditions => ["login=? OR email=?", login, login] # need to get the salt
     u && u.authenticated?(password) ? u : nil
   end
-
+ 
   def login=(value)
     write_attribute :login, (value ? value.downcase : nil)
   end
@@ -70,9 +70,14 @@ class User < ActiveRecord::Base
     activate_now = (CONFIG[:no_activation_for_first_user] and User.count==0)
     register!
     if activate_now
-      roles << (Role.find_by_name('admin') or Role.create!(:name=>'admin'))
+      roles << Role.find_or_create_by_name('admin')
       activate!  
     end
+  end
+  
+  def activate
+    roles << Role.find_or_create_by_name('admin') if User.count == 1
+    activate!
   end
 
   protected

@@ -6,6 +6,7 @@ class UsersController < ApplicationController
   require_role "admin", :only => [:edit, :update, :change_password, :destroy], :unless =>"@user == current_user"
   require_role "admin", :only => [:suspend, :unsuspend, :purge]
   protect_from_forgery :except => [:check_user_login, :check_user_email]
+  
 
   # render new.rhtml
   def new
@@ -37,8 +38,7 @@ class UsersController < ApplicationController
     user = User.find_by_activation_code(params[:activation_code]) unless params[:activation_code].blank?
     case
     when (!params[:activation_code].blank?) && user && !user.active?
-      user.roles << (Role.find_by_name('admin') or Role.create!(:name=>'admin')) if User.count == 1
-      user.activate!
+      user.activate
       flash[:notice] = "Signup complete! Please sign in to continue."
       redirect_to '/login'
     when params[:activation_code].blank?
@@ -107,6 +107,44 @@ class UsersController < ApplicationController
   def purge
     @user.destroy
     redirect_to users_path
+  end
+  
+  def remind_password
+    @user = User.new
+    if request.post?
+      user = User.find_by_email(params[:email])
+      if user.nil?
+        flash[:notice] = 'No active user registered with given email.'
+        return
+      elsif !user.active?
+        flash[:notice] = 'User with given email is not activated yet.'
+        return
+      end
+      user.remember_me
+      key = user.remember_token
+      url = url_for(:action => 'recover_password', :key => key)
+      if user.save
+        UserMailer.deliver_forgot_password(user, url)
+        flash[:notice] = "Check your email for instructions how to recover your password."
+        redirect_to main_path
+      end 
+    end
+  end
+  
+  def recover_password
+    redirect_to home_path unless params[:key]
+    flash[:notice] = "You can set new password now."
+    @key = params[:key]
+    @user = User.find_by_remember_token(@key)
+    redirect_to home_path unless @user
+    if request.post?
+      if @user.update_attributes(params[:user])
+        flash[:notice] = "Now you can login with your new password."
+        @user.forget_me
+        kill_remember_cookie!
+        redirect_to login_path
+      end
+    end
   end
   
   # action for ajax validations

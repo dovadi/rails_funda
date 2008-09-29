@@ -13,6 +13,16 @@ class UserMailer < ActionMailer::Base
     @body[:url]  = CONFIG[:site_url]
   end
   
+  def forgot_password(user, url=nil)
+    setup_email(user)
+    # Email header info
+    @subject += "Forgotten password notification"
+    # Email body substitutions
+    @body["name"] = "#{user.login}"
+    @body["url"] = url || ""
+    content_type "text/html"
+  end
+  
   protected
     def setup_email(user)
       @recipients  = "#{user.email}"

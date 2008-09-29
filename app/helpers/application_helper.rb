@@ -19,14 +19,14 @@ module ApplicationHelper
    [
     ["View site", home_path],
     ["Manage Roles", {:controller=>"admin/roles"}],
-    ["Manage Users", {:controller=>"admin/user"}]
+    ["Manage Users", {:controller=>"admin/users"}]
    ]
  end
  
  def streamlined_side_menus
    [
     ["Manage Roles", {:controller=>"admin/roles"}],
-    ["Manage Users", {:controller=>"admin/user"}]
+    ["Manage Users", {:controller=>"admin/users"}]
    ]
  end
  

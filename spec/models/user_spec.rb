@@ -262,6 +262,25 @@ describe User do
     users(:quentin).deleted_at.should_not be_nil
     users(:quentin).should be_deleted
   end
+  
+  it "register first user with admin role" do
+    User.delete_all
+    CONFIG[:no_activation_for_first_user] = true
+    user = User.new({ :login => 'quire', :email => 'quire@example.com', :password => 'quire69', :password_confirmation => 'quire69' })
+    user.register
+    user.reload
+    user.has_role?("admin").should be_true
+  end
+  
+  it "activate first user with admin role" do
+    User.delete_all
+    CONFIG[:no_activation_for_first_user] = false
+    user = User.new({ :login => 'quire', :email => 'quire@example.com', :password => 'quire69', :password_confirmation => 'quire69' })
+    user.register
+    user.activate
+    user.reload
+    user.has_role?("admin").should be_true
+  end
 
   describe "being unsuspended" do
     fixtures :users
