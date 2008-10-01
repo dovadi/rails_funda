@@ -3,6 +3,7 @@
 ENV["RAILS_ENV"] = "test"
 require File.expand_path(File.dirname(__FILE__) + "/../config/environment")
 require File.expand_path(File.dirname(__FILE__) + "/../spec/factories")
+require File.expand_path(File.dirname(__FILE__) + "/../spec/be_valid_xhtml")
 require 'spec'
 require 'spec/rails'
 
