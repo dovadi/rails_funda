@@ -34,7 +34,7 @@ module ActionView
       end
       
       def initialize_validator(field_name)
-        res = "var #{field_name} = new LiveValidation('#{field_name}', {onlyOnBlur:true});"
+        res = "var #{field_name} = new LiveValidation('#{field_name}', {onlyOnBlur:true, validMessage:' '});"
         if field_name.include?('_confirmation')
           configuration = {}
           configuration[:match] = field_name.gsub('_confirmation', '')
