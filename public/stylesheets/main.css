@@ -26,23 +26,10 @@ div.javascript_disabled_notification div.inner {padding:20px;text-align:left;}
 div.javascript_disabled_notification h1 {font-size:18px;margin:0 0 18px;}
 div.javascript_disabled_notification p {font-size:14px;line-height:140%;margin:0 0 14px;}
 
-fieldset.form{
-  border : 15px solid #ddd;
-  background-color : #EAF5EF;
-}
+fieldset.form{border : 15px solid #ddd; background-color : #EAF5EF;margin:0 auto 10px auto;width:375px;}
+div.center_block{margin:0 auto;width:440px; padding:0px; margin-top : 20px; margin-bottom:8px;}
+ol.form li{clear:both; padding-top : 10px; list-style : none;}
+ol.form li input{margin-top:0px;}
+ol.form label{font-size : 1.2em;color : #666; margin-bottom : 0px;}
 
-ol.form li{
-  clear:both;
-  padding-top : 10px;
-  list-style : none;
-}
-
-ol.form li input{
-  margin-top:0px;
-}
-
-ol.form label{
-  font-size : 1.2em;
-  color : #666;
-  margin-bottom : 0px;
-}
+h3.form_title{margin:0 auto;width:440px; padding:0px; margin-top : 20px; margin-bottom:8px; font-size : 1.6em;}

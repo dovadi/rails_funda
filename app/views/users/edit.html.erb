@@ -2,7 +2,7 @@
 
 <%content_for(:left, error_messages_for(:user)) %>
 
-<h1>Edit you account information</h1>
+<h3 class="form_title">Edit you account information</h3>
 
 
 <% form_for :user, :url => user_path(@user), :html=>{:method=>:put} do |f| -%>
@@ -23,10 +23,10 @@
 </fieldset> 
 <% end -%>
 
-<hr/>
+
 <% form_for :user, :url => {:action=>:change_password, :id=>@user.id}, :html=>{:method=>:put} do |f| -%>
 <% @user.password = @user.password_confirmation = nil %>
-<h3>Change password</h3>
+<h3 class="form_title">Change password</h3>
   <fieldset class='form'>
     <ol class="nospace form">
       <li>
@@ -51,12 +51,13 @@
 
 
 
-<div class='tb-margin10 cancel_action' id="cancel_link">
+<div class='tb-margin10 cancel_action center_block' id="cancel_link">
   <%=link_to_function "Cancel my account", "$j('.cancel_action').toggle();"%> <small>with confirmation</small>
 </div>  
 
 <div id='cancel_account' class='hide cancel_action'>
   <% form_tag user_path(current_user), :method=>:delete do -%>
+    <h3 class="form_title">Cancel account</h3>
     <fieldset class='form'>
     <ol class="nospace form">
       <li>
