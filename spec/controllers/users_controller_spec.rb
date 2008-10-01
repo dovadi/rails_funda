@@ -5,8 +5,7 @@ require File.dirname(__FILE__) + '/../spec_helper'
 include AuthenticatedTestHelper
 
 describe UsersController do
-  fixtures :users, :roles, :roles_users 
-  
+  fixtures :users, :roles 
   
   it 'add admin role for first user after activation' do
     User.delete_all

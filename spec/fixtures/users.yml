@@ -10,7 +10,6 @@ quentin:
   activation_code:           
   activated_at:              <%= 5.days.ago.to_s :db %>
   state:                     active
-      
 aaron:
   id:                        2
   login:                     aaron
@@ -51,3 +50,5 @@ admin:
   activation_code:           
   activated_at:              <%= 5.days.ago.to_s :db %>
   state:                     active
+  roles:                     admin
+  

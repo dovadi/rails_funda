@@ -1,3 +1,2 @@
-admin_role:
-  id: 1
+admin:
   name: admin
