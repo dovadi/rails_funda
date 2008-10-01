@@ -27,8 +27,9 @@ h2. Test libraries
 
 h2. Rails funda on Windows
 
-Rails Funda is tested on windows. You need to have to gems installed locally:
+Rails Funda is tested on windows. You need to have some gems installed locally:
 
+* RSpec: gem install win32console
 * RCov: gem install rcov
 * Selenium: rake test:acceptance, you must: gem install win32-open3
 
