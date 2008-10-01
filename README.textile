@@ -25,9 +25,17 @@ h2. Test libraries
 * RSpec on Rails with Rcov
 * Factory Girl
 
+h2. Rails funda on Windows
+
+Rails Funda is tested on windows. You need to have some gems installed locally:
+
+* RSpec: gem install win32console
+* RCov: gem install rcov
+* Selenium: rake test:acceptance, you must: gem install win32-open3
+
 h2. Credits
 
-This project is sponsored and maintained by "Agile Dovadi BV":http://dovadi.com, contact "Frank Oxener":mailto:frank@dovadi.com
+This project is funded and maintained by "Agile Dovadi BV":http://dovadi.com, contact "Frank Oxener":mailto:frank@dovadi.com
 
 h2. Licence
 

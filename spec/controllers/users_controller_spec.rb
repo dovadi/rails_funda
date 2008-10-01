@@ -249,6 +249,52 @@ describe UsersController do
     flash[:error ].should_not be_nil
   end
   
+  it "should send mail on recover password request when right email is given" do
+    lambda do
+      user = users(:quentin)
+      post :remind_password, :email=>user.email
+      flash[:notice].should_not be_nil
+      response.should be_redirect
+    end.should change(ActionMailer::Base.deliveries, :length).by(1)
+  end
+  
+  it "should not send mail on recover password request when right email is given but user is not active" do
+    lambda do
+      user = users(:quentin)
+      user.suspend! 
+      post :remind_password, :email=>user.email
+      flash[:notice].should_not be_nil
+    end.should_not change(ActionMailer::Base.deliveries, :length)
+  end
+  
+  it "should not send mail on recover password request when wrong email is given" do
+    lambda do
+      user = users(:quentin)
+      post :remind_password, :email=>"ssss@aaaaa.com"
+      flash[:notice].should_not be_nil
+    end.should_not change(ActionMailer::Base.deliveries, :length)
+  end
+  
+  it "should show recover password page" do
+    user = users(:quentin)
+    post :remind_password, :email=>user.email
+    get :recover_password, :key=>user.remember_token
+    response.should_not be_redirect
+  end
+  
+  it "should change password on recover page" do
+    user = users(:aaron)
+    old_pass = user.crypted_password
+    user.activate!
+    user.remember_me
+    post :recover_password, :key=>user.remember_token,  :user =>{:password=>'manilosa', :password_confirmation=>'manilosa'}
+    response.should redirect_to(login_path)  
+    user.reload
+    user.crypted_password.should_not == old_pass
+  end
+  
+  
+  
   
   def create_user(options = {})
     post :create, :user => { :login => 'quire', :email => 'quire@example.com',
