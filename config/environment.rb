@@ -61,7 +61,7 @@ Rails::Initializer.run do |config|
   config.action_controller.session = {
     :session_key => '_rails_funda_session',
     :secret      => CONFIG[:secret_for_sessions],#'00b09871ac6f25601ec4a6cc5ed28da73d1633a12e3f44a32ab90151c6842bcf46eceb9b37445846ba87c3005b425656c18c8442a53f44b8591f32e1f6db971a'
-    :session_domain => ".local.host"
+    :session_domain => CONFIG[:session_domain]
   }
 
   # Use the database for sessions instead of the cookie-based default,
