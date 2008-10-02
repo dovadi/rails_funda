@@ -120,11 +120,7 @@ class UsersController < ApplicationController
         flash[:notice] = 'User with given email is not activated yet.'
         return
       end
-      user.remember_me
-      key = user.remember_token
-      url = url_for(:action => 'recover_password', :key => key)
-      if user.save
-        UserMailer.deliver_forgot_password(user, url)
+      if user.forgot_password
         flash[:notice] = "Check your email for instructions how to recover your password."
         redirect_to main_path
       end 

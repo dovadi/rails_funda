@@ -2,6 +2,8 @@
 development: 
   site_url: http://localhost:3000
   admin_email: donotrepy@dovadi.com
+  site_domain: local.host
+  session_domain: .local.host
   delivery_method: smtp
   smtp_settings:
     address: mail.planet.nl
@@ -19,6 +21,10 @@ global:
 test: 
   site_url: http://test.host
   redirect_to_login_when_no_access: true
+  site_domain: local.host
+  session_domain: .local.host
 production: 
   site_url: http://www.example.com
   admin_email: donotrepy@example.com
+  site_domain: example.com
+  session_domain: .example.com

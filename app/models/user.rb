@@ -79,6 +79,16 @@ class User < ActiveRecord::Base
     roles << Role.find_or_create_by_name('admin') if User.count == 1
     activate!
   end
+  
+  def forgot_password
+    remember_me
+    @forgot_password = true
+    save
+  end
+  
+  def recently_forgot_password?
+    @forgot_password
+  end
 
   protected
     
