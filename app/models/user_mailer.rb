@@ -20,8 +20,7 @@ class UserMailer < ActionMailer::Base
     # Email body substitutions
     @body["name"] = "#{user.login}"
     key = user.remember_token
-    url = url_for(:host=>CONFIG[:site_domain], :controller=>'users', :action => 'recover_password', :key => key)
-    @body["url"] = url || ""
+    @body["key"] = key
     content_type "text/html"
   end
   

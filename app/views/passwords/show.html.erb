@@ -3,7 +3,7 @@
 <%content_for(:left, error_messages_for(:user)) %>
 
 <h3 class="form_title">Set new password</h3>
-<% form_for :user, :url => {:action=>:recover_password, :key=>@key}, :html=>{:method=>:post} do |f| -%>
+<% form_for :user, :url =>change_password_path(:key=>@key), :html=>{:method=>:post} do |f| -%>
   <fieldset class='form'>
     <ol class="nospace form">
       <li>

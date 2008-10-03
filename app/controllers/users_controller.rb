@@ -65,22 +65,6 @@ class UsersController < ApplicationController
     end
   end
   
-  def change_password
-    user = User.authenticate(@user.login, params[:old_password])
-    if user
-      if !params[:user][:password].blank? && !params[:user][:password_confirmation].blank? && @user.update_attributes(params[:user])
-        flash[:success] = "Your password is changed."
-        redirect_to home_path
-      else
-        flash[:error]  = "Password is not changed because new password not provided."
-        render :action=>:edit, :id=>@user
-      end
-    else
-      flash[:error]  = "Password is not changed because old password is not valid."
-      render :action=>:edit, :id=>@user
-    end  
-  end
-
   def suspend
     @user.suspend! 
     redirect_to users_path
@@ -100,7 +84,7 @@ class UsersController < ApplicationController
     else
       flash[:error] = "Wrong password, account can not be deleted."
       flash[:not_deleted] = true
-      redirect_to :action=>:edit, :id=>@user.id
+      redirect_to edit_user_path(@user)
     end
   end
 
@@ -109,40 +93,7 @@ class UsersController < ApplicationController
     redirect_to users_path
   end
   
-  def remind_password
-    @user = User.new
-    if request.post?
-      user = User.find_by_email(params[:email])
-      if user.nil?
-        flash[:notice] = 'No active user registered with given email.'
-        return
-      elsif !user.active?
-        flash[:notice] = 'User with given email is not activated yet.'
-        return
-      end
-      if user.forgot_password
-        flash[:notice] = "Check your email for instructions how to recover your password."
-        redirect_to main_path
-      end 
-    end
-  end
-  
-  def recover_password
-    redirect_to home_path unless params[:key]
-    flash[:notice] = "You can set new password now."
-    @key = params[:key]
-    @user = User.find_by_remember_token(@key)
-    redirect_to home_path unless @user
-    if request.post?
-      if @user.update_attributes(params[:user])
-        flash[:notice] = "Now you can login with your new password."
-        @user.forget_me
-        kill_remember_cookie!
-        redirect_to login_path
-      end
-    end
-  end
-  
+ 
   # action for livevalidations
   def show
     case params[:id]
