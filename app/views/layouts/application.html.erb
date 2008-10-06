@@ -22,7 +22,7 @@
     <noscript><style type="text/css">div.container { display: none }</style></noscript>
 
   </head>
-  <body>
+<body>
 	<noscript>
 		<div class="javascript_disabled_notification">
 			<div class="inner">
@@ -39,27 +39,30 @@
 			</div>
 		</div>
 	</noscript>
-	
-    <div class="container">
-      <div class="span-20">
+
+	<div class="container">
+		<div class="span-20">
 			<%= link_to "", main_url(:subdomain=>false),{:title=>"Bootstrap the web!", :alt=>"Bootstrap the web!", :class=>"logo"}%>
-      </div>
-      <div class="span-4 last">
-        <%=render :partial=>"users/user_bar"%>
-      </div>  
-      <hr />
-      <%=flash_helper%>
-      
-      <%left = (yield :left)%>
-      <%= left.blank? ? "&nbsp" : left%>
-      <div class="span-24 last">
-        <%=yield%>
-      </div>
-      <hr />
-      <div class="span-6 last">
-        <a href="http://github.com/dovadi/rails_funda">Rails Funda</a></div>
-    </div>
-  </body> 
+		</div>
+		<div class="span-4 last">
+			<%=render :partial=>"users/user_bar"%>
+		</div>  
+		<%=flash_helper%>
+
+		<%left = (yield :left)%>
+		<%= left.blank? ? "&nbsp" : left%>
+		<hr/>
+		<div class="span-24 last">
+			<%=yield%>
+		</div>
+
+		<hr />
+		<div class="span-6 last">
+			<a href="http://github.com/dovadi/rails_funda">Rails Funda</a>
+		</div>
+
+	</div>
+</body> 
 </html>
 
 
