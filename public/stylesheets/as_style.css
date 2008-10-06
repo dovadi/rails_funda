@@ -38,7 +38,7 @@
  .column { position: relative; float: left; }
 
 #footer, #footer a {background-color: #2175bc; color: white; text-align: center; font-style: italic; font-size: 9pt;}
-#footer a:hover {color:  orange;}
+#footer a:hover {color:  #FF8040;}
  
  body {
 	background-color:  #F0F0F0;

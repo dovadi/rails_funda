@@ -153,7 +153,7 @@ class BeValidCSS < BeValidAsset
       params = [ 
         file_to_multipart('file','file.css','text/css',content),
         text_to_multipart('warning','1'),
-        text_to_multipart('profile','css2'),
+        text_to_multipart('profile','css3'),
         text_to_multipart('usermedium','all') ]
       
       boundary = '-----------------------------24464570528145'

@@ -18,5 +18,6 @@ body {text-align:center;}
 ol {margin-left:2em;}
 sup {vertical-align:text-top;}
 sub {vertical-align:text-bottom;}
-html>body p code {*white-space:normal;}
+html>body p code {white-space:normal;} /* was html>body p code {*white-space:normal;} */
+
 hr {margin:-8px auto 11px;}
