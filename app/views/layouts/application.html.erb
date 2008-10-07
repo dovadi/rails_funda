@@ -49,11 +49,12 @@
 		<div class="span-4 last">
 			<%=render :partial=>"users/user_bar"%>
 		</div>  
-		<%=flash_helper%>
+		<hr/>
+    <%=flash_helper%>
 
 		<%left = (yield :left)%>
 		<%= left.blank? ? "&nbsp" : left%>
-		<hr/>
+		
 		<div class="span-24 last">
 			<%=yield%>
 		</div>
