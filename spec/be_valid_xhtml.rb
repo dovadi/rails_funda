@@ -90,8 +90,7 @@ class BeValidXhtml < BeValidAsset
     fragment = response.body
     fragment = wrap_with_xhtml_header(fragment) if @fragment
     return true if validity_checks_disabled?
-    base_filename = cache_resource('markup',fragment,'html',fn)
-    
+    base_filename = cache_resource('markup',fragment,'html', fn)
     return false unless base_filename
     results_filename =  base_filename + '-results.yml'
 
@@ -116,7 +115,6 @@ class BeValidXhtml < BeValidAsset
   
   def wrap_with_xhtml_header(fragment)
       ret = <<-EOS
-  <?xml version="1.0" encoding="UTF-8"?>
   <!DOCTYPE html PUBLIC
       "-//W3C//DTD XHTML 1.1 plus MathML 2.0 plus SVG 1.1//EN"
       "http://www.w3.org/2002/04/xhtml-math-svg/xhtml-math-svg.dtd">
