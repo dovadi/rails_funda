@@ -21,10 +21,12 @@
 
     <%= stylesheet_link_tag 'live_validation' %>
 
-    <noscript><style type="text/css">div.container { display: none }</style></noscript>
+    
 
   </head>
+  
 <body>
+  <noscript><style type="text/css">div.container { display: none }</style></noscript>
 	<noscript>
 		<div class="javascript_disabled_notification">
 			<div class="inner">
@@ -44,7 +46,7 @@
 
 	<div class="container">
 		<div class="span-20">
-			<%= link_to "", main_url(:subdomain=>false),{:title=>"Bootstrap the web!", :alt=>"Bootstrap the web!", :class=>"logo"}%>
+			<%= link_to "", main_url(:subdomain=>false),{:title=>"Bootstrap the web!", :class=>"logo"}%>
 		</div>
 		<div class="span-4 last">
 			<%=render :partial=>"users/user_bar"%>

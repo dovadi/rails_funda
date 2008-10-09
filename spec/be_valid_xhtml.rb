@@ -136,11 +136,27 @@ class BeValidCSS < BeValidAsset
   def initialize(options)
     @filename = options[:filename]
   end
+  
+  def description
+    "be valid css"
+  end
+  
+  def failure_message
+   " expected css to be valid, but validation produced these errors:\n #{@message}"
+  end
+  
+  def negative_failure_message
+    " expected to not be valid, but was (missing validation?)"
+  end
+  
   def matches?(file_contents)
     content = file_contents
     filename = @filename
+    
+    return true if validity_checks_disabled?
+    
     base_filename = cache_resource('css',content,'css', filename)
-
+    
     return false unless base_filename
 
     results_filename =  base_filename + '-results.yml'
