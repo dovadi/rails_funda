@@ -13,6 +13,6 @@ describe "layouts" do
   it 'renders streamlined' do
     assigns[:current_user] = mock(User, :login=>"dovadi")
     render "/layouts/streamlined.rhtml"
-    response.should be_valid_xhtml
+    response.should be_success
   end
 end
