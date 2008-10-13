@@ -124,7 +124,9 @@ class BeValidXhtml < BeValidAsset
     <title>Test</title>
   </head>
   <body>
+  <div>
     #{fragment}
+  </div>  
   </body>
   </html>
       EOS
