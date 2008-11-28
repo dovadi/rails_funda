@@ -3,18 +3,10 @@ class Streamlined::Column::Addition < Streamlined::Column::Base
 
   def initialize(sym, parent_model)
     @name = sym.to_s
-    @setter_name = @name + '='
     @human_name = sym.to_s.humanize
+    @read_only = true
     @parent_model = parent_model
-    @read_only = !@parent_model.instance_methods.include?(@setter_name)
-   end 
-
-  def render_td_edit(view, item)
-    result = render_input_field(view, field_type, model_underscore, name, html_options)
-    wrap(result)
   end
-  alias :render_td_new :render_td_edit
-  alias :render_td_list :render_td_show 
   
   def addition?
     true
@@ -34,6 +26,4 @@ class Streamlined::Column::Addition < Streamlined::Column::Base
   def render_td_show(view, item)
     render_content(view, item)
   end
-  
-  
 end

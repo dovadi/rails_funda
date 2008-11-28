@@ -1,5 +1,5 @@
 class Streamlined::Column::ActiveRecord < Streamlined::Column::Base
-  attr_accessor :ar_column, :enumeration, :check_box, :default_edit_value, :field_type
+  attr_accessor :ar_column, :enumeration, :check_box, :default_edit_value
   attr_with_default :filterable, 'true'
   delegates :name, :to => :ar_column
   delegates :table_name, :to => :parent_model

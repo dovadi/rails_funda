@@ -6,7 +6,7 @@ class Streamlined::Column::Base
   include ERB::Util
   
   attr_accessor :human_name, :link_to, :popup, :parent_model, :wrapper, :additional_column_pairs,
-                :additional_includes, :filter_column, :help, :field_type
+                :additional_includes, :filter_column, :help
   
   attr_with_default :human_name_explicitly_set, 'false'
   attr_with_default :read_only, 'false'
@@ -17,34 +17,6 @@ class Streamlined::Column::Base
   attr_with_default :hide_if_unassigned, 'false'
   attr_with_default :unassigned_value, '"Unassigned"'
   attr_with_default :html_options, '{}'
-  
-  def initialize(sym, parent_model)
-    @name = sym.to_s
-    @setter_name = @name + '='
-    @human_name = sym.to_s.humanize
-    @parent_model = parent_model
-    @read_only = !@parent_model.instance_methods.include?(@setter_name)
-  
- end
-
-  def render_input_field(view, field_type, obj_name, action_name, options = {})
-    methods = { :text_area => :text_area,
-                :password => :password_field,
-                :check_box => :check_box }
-    if methods.include?(field_type.to_sym)
-      view.send(methods[field_type.to_sym], obj_name, action_name, options)
-    else
-      view.text_field(obj_name, action_name, options)
-    end
-  end 
-  
-  def render_td_edit(view, item)
-    result = render_input_field(view, field_type, model_underscore, name, html_options)
-    wrap(result)
-  end
-  alias :render_td_new :render_td_edit
-
-
   
   def human_name
     (@human_name.nil? || human_name_explicitly_set) ? @human_name : @human_name.titleize
@@ -169,7 +141,6 @@ class Streamlined::Column::Base
       ""
     end
   end
-  
   
   def render_content(view, item)
     content = item.send(self.name)    
