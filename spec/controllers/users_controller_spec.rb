@@ -219,7 +219,7 @@ describe UsersController do
     it "response should be nil if login doesn't exists" do
       get :show, :id=>"check_user_login", :value=>"quenti"
       response.should be_success
-      response.body.should == ""
+      response.body.should == " "
     end
     it "response should be taken if login already exists" do
       get :show, :id=>"check_user_login", :value=>"quentin"
@@ -229,7 +229,7 @@ describe UsersController do
     it "response should be nil if email doesn't exists" do
       get :show, :id=>"check_user_email", :value=>"quenti@example.com"
       response.should be_success
-      response.body.should == ""
+      response.body.should == " "
     end
     it "response should be taken if email already exists" do
       get :show, :id=>"check_user_email", :value=>"quentin@example.com"
@@ -248,22 +248,22 @@ describe UsersController do
     it "response should be nil if login doesn't exists" do
       get :show, :id=>"check_user_login", :value=>"quenti"
       response.should be_success
-      response.body.should == ""
+      response.body.should == " "
     end
     it "response should be taken if login already exists" do
       get :show, :id=>"check_user_login", :value=>"quentin"
       response.should be_success
-      response.body.should == ""
+      response.body.should == " "
     end
     it "response should be nil if email doesn't exists" do
       get :show, :id=>"check_user_email", :value=>"quenti@example.com"
       response.should be_success
-      response.body.should == ""
+      response.body.should == " "
     end
     it "response should be taken if email already exists" do
       get :show, :id=>"check_user_email", :value=>"quentin@example.com"
       response.should be_success
-      response.body.should == ""
+      response.body.should == " "
     end
   end
    
