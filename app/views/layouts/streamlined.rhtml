@@ -1,27 +1,9 @@
 <html>
 <head>
   <title><%= controller.action_name %></title>
-  <%= streamlined_auto_discovery_link_tag %>
-  <%= javascript_include_tag "prototype" %>
-  <%= javascript_include_tag 'jquery' %>
-  <%= javascript_include_tag 'live_validation' %>
-  <%= javascript_include_tag :defaults %>
-  <%= javascript_include_tag 'streamlined' %>
-  <%= javascript_include_tag '/windows_js/javascripts/window' %>
-  <%= javascript_include_tag '/overlib/overlib' %>
-  <%= javascript_include_tag 'tabber' %>
-  <%= javascript_include_tag 'tabber-minimized' %>
-  
-
-
- <%= stylesheet_link_tag 'live_validation' %>
- 
-  <%= stylesheet_link_tag '/windows_js/themes/mac_os_x' %>
-  <%= stylesheet_link_tag '/windows_js/themes/default' %>
-  <%= stylesheet_link_tag 'as_style' %>
-  <%= stylesheet_link_tag 'streamlined' %>
-  <%= stylesheet_link_tag 'menu' %>
-  <%= stylesheet_link_tag 'tabber' %>
+  <%= streamlined_auto_discovery_link_tag %>	
+  <%= javascript_include_tag :defaults, "prototype",'jquery','live_validation', 'streamlined', '/windows_js/javascripts/window', '/overlib/overlib', 'tabber', 'tabber-minimized',:cache=> true  %>
+  <%= stylesheet_link_tag '/windows_js/themes/mac_os_x','/windows_js/themes/default','as_style','streamlined','menu', 'tabber', 'live_validation', :cache=> true %>
 </head>
 <body>
 	<div id="header">

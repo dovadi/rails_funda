@@ -5,24 +5,11 @@
     <meta name="keywords" content=""/>
     <meta name="description" content=""/>
     <title><%=CONFIG[:site_title]%> <%="- #{yield(:title)}"%></title>
-    <%= stylesheet_link_tag "screen", :media => "all" %>
+    <%= stylesheet_link_tag "screen", "main", :cache=>true, :media => "all" %>
     <%= stylesheet_link_tag "print", :media => "print" %>
-    <%= stylesheet_link_tag "main", :media => "all" %>
-    <!--[if IE]><%= stylesheet_link_tag "ie", :media => "all" %><![endif]-->
-    
-    <%= javascript_include_tag "prototype" %>
-    
-    <%= javascript_include_tag "jquery" %>
-    <%= javascript_include_tag "jquery-ui" %>
-    <%= javascript_include_tag "jrails" %>
-    <%= javascript_include_tag 'live_validation' %>
-    <%= javascript_include_tag "jquery.ie6blocker" %>
-    <%= javascript_include_tag 'application' %>
-
-    <%= stylesheet_link_tag 'live_validation' %>
-
-    
-
+    <!--[if IE]><%= stylesheet_link_tag "ie", :media => "all" %><![endif]-->    
+    <%= javascript_include_tag "prototype", "jquery", "jquery-ui", "jrails",'live_validation', "jquery.ie6blocker", "application", "live_validation", :cache=>true %>
+ 
   </head>
   
 <body>
