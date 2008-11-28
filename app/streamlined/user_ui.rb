@@ -14,8 +14,8 @@ Streamlined.ui_for(User) do
                :email, 
                :name,
                :roles,{ :quick_add => true},
-               :state, {:enumeration => User.states},
-               :password, {:field_type=>'password'},
-               :password_confirmation, {:field_type=>'password'}
+               :state, {:enumeration => User.states}
+               # :password, {:field_type=>'password'},
+               #              :password_confirmation, {:field_type=>'password'}
                 
 end   
