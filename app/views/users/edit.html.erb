@@ -4,6 +4,7 @@
 
 <h3 class="form_title">Edit you account information</h3>
 
+<%= @user.login %>
 
 <% form_for :user, :url => user_path(@user), :html=>{:method=>:put} do |f| -%>
 <fieldset class='form'>

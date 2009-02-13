@@ -1,10 +1,7 @@
 # This file is copied to ~/spec when you run 'ruby script/generate rspec'
 # from the project root directory.
 ENV["RAILS_ENV"] = "test"
-ENV["NET"] = "true" if !ENV["NET"]
 require File.expand_path(File.dirname(__FILE__) + "/../config/environment")
-require File.expand_path(File.dirname(__FILE__) + "/../spec/factories")
-require File.expand_path(File.dirname(__FILE__) + "/../spec/be_valid_xhtml")
 require 'spec'
 require 'spec/rails'
 
@@ -46,5 +43,5 @@ Spec::Runner.configure do |config|
   #
   # == Notes
   # 
-  # For more information take a look at Spec::Example::Configuration and Spec::Runner
+  # For more information take a look at Spec::Runner::Configuration and Spec::Runner
 end

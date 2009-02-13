@@ -216,20 +216,20 @@ describe UsersController do
   fixtures :users
   
   describe "with livevalidations on signup" do
-    it "response should be nil if login doesn't exists" do
+    it "response should be blank if login doesn't exists" do
       get :show, :id=>"check_user_login", :value=>"quenti"
       response.should be_success
-      response.body.should == ""
+      response.body.should == " "
     end
     it "response should be taken if login already exists" do
       get :show, :id=>"check_user_login", :value=>"quentin"
       response.should be_success
       response.body.should == "taken"
     end
-    it "response should be nil if email doesn't exists" do
+    it "response should be blank if email doesn't exists" do
       get :show, :id=>"check_user_email", :value=>"quenti@example.com"
       response.should be_success
-      response.body.should == ""
+      response.body.should == " "
     end
     it "response should be taken if email already exists" do
       get :show, :id=>"check_user_email", :value=>"quentin@example.com"
@@ -245,25 +245,25 @@ describe UsersController do
       login_as :quentin
     end
 
-    it "response should be nil if login doesn't exists" do
+    it "response should be blank if login doesn't exists" do
       get :show, :id=>"check_user_login", :value=>"quenti"
       response.should be_success
-      response.body.should == ""
+      response.body.should == " "
     end
-    it "response should be taken if login already exists" do
+    it "response should be blank if login already exists" do
       get :show, :id=>"check_user_login", :value=>"quentin"
       response.should be_success
-      response.body.should == ""
+      response.body.should == " "
     end
-    it "response should be nil if email doesn't exists" do
+    it "response should be blank if email doesn't exists" do
       get :show, :id=>"check_user_email", :value=>"quenti@example.com"
       response.should be_success
-      response.body.should == ""
+      response.body.should == " "
     end
-    it "response should be taken if email already exists" do
+    it "response should be blank if email already exists" do
       get :show, :id=>"check_user_email", :value=>"quentin@example.com"
       response.should be_success
-      response.body.should == ""
+      response.body.should == " "
     end
   end
    
@@ -292,11 +292,11 @@ describe UsersController do
     end
     
     it "should route users's 'update' action correctly" do
-      route_for(:controller => 'users', :action => 'update', :id => '1').should == "/users/1"
+      route_for(:controller => 'users', :action => 'update', :id => '1').should == {:path=>"/users/1", :method=>:put}
     end
     
     it "should route users's 'destroy' action correctly" do
-      route_for(:controller => 'users', :action => 'destroy', :id => '1').should == "/users/1"
+      route_for(:controller => 'users', :action => 'destroy', :id => '1').should == {:path=>"/users/1", :method=>:delete}
     end
   end
   
@@ -349,20 +349,20 @@ describe UsersController do
     
     it "should route users_path() to /users" do
       users_path().should == "/users"
-      formatted_users_path(:format => 'xml').should == "/users.xml"
-      formatted_users_path(:format => 'json').should == "/users.json"
+      users_path(:format => 'xml').should == "/users.xml"
+      users_path(:format => 'json').should == "/users.json"
     end
     
     it "should route new_user_path() to /users/new" do
       new_user_path().should == "/users/new"
-      formatted_new_user_path(:format => 'xml').should == "/users/new.xml"
-      formatted_new_user_path(:format => 'json').should == "/users/new.json"
+      new_user_path(:format => 'xml').should == "/users/new.xml"
+      new_user_path(:format => 'json').should == "/users/new.json"
     end
     
     it "should route user_(:id => '1') to /users/1" do
       user_path(:id => '1').should == "/users/1"
-      formatted_user_path(:id => '1', :format => 'xml').should == "/users/1.xml"
-      formatted_user_path(:id => '1', :format => 'json').should == "/users/1.json"
+      user_path(:id => '1', :format => 'xml').should == "/users/1.xml"
+      user_path(:id => '1', :format => 'json').should == "/users/1.json"
     end
     
     it "should route edit_user_path(:id => '1') to /users/1/edit" do

@@ -1,5 +1,5 @@
 require 'rails_generator/secret_key_generator'
-require 'action_controller/cgi_ext/session'
+# require 'action_controller/cgi_ext/session'
 
 namespace :funda do
 

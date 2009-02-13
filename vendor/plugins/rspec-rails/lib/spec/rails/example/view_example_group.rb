@@ -1,6 +1,29 @@
 module Spec
   module Rails
     module Example
+      class ViewExampleGroupController < ApplicationController #:nodoc:
+        include Spec::Rails::Example::RenderObserver
+        attr_reader :template
+
+        def add_helper_for(template_path)
+          add_helper(template_path.split('/')[0])
+        end
+
+        def add_helper(name)
+          begin
+            helper_module = "#{name}_helper".camelize.constantize
+          rescue
+            return
+          end
+          (class << template; self; end).class_eval do
+            include helper_module
+          end
+        end
+        
+        def forget_variables_added_to_assigns
+        end
+      end
+
       # View Examples live in $RAILS_ROOT/spec/views/.
       #
       # View Specs use Spec::Rails::Example::ViewExampleGroup,
@@ -24,22 +47,21 @@ module Spec
       #     end
       #   end
       class ViewExampleGroup < FunctionalExampleGroup
-        before(:each) do
-          ensure_that_flash_and_session_work_properly
+        tests ViewExampleGroupController
+        class << self
+          def inherited(klass) # :nodoc:
+            klass.subject { template }
+            super
+          end
         end
 
-        after(:each) do
-          ensure_that_base_view_path_is_not_set_across_example_groups
-        end
-
-        def initialize(defined_description, &implementation) #:nodoc:
-          super
-          @controller_class_name = "Spec::Rails::Example::ViewExampleGroupController"
-        end
+        before {ensure_that_flash_and_session_work_properly}
+        after {ensure_that_base_view_path_is_not_set_across_example_groups}
 
         def ensure_that_flash_and_session_work_properly #:nodoc:
           @controller.send :initialize_template_class, @response
           @controller.send :assign_shortcuts, @request, @response
+          @controller.send :initialize_current_url
           @session = @controller.session
           @controller.class.send :public, :flash
         end
@@ -63,7 +85,7 @@ module Spec
 
         def derived_action_name(options) #:nodoc:
           parts = subject_of_render(options).split('/').reject { |part| part.empty? }
-          "#{parts.last}"
+          "#{parts.last}".split('.').first
         end
 
         def subject_of_render(options) #:nodoc:
@@ -103,18 +125,16 @@ module Spec
           add_helpers(options)
 
           assigns[:action_name] = @action_name
-
-          @request.path_parameters = {
-          :controller => derived_controller_name(options),
-          :action => derived_action_name(options)
-          }
+          
+          @request.path_parameters = @request.path_parameters.merge(
+            :controller => derived_controller_name(options),
+            :action => derived_action_name(options)
+          ).merge(options[:path_parameters] || {})
 
           defaults = { :layout => false }
           options = defaults.merge options
 
           @controller.send(:params).reverse_merge! @request.parameters
-
-          @controller.send :initialize_current_url
 
           @controller.class.instance_eval %{
             def controller_path
@@ -150,29 +170,12 @@ module Spec
 
         protected
         def _assigns_hash_proxy
-          @_assigns_hash_proxy ||= AssignsHashProxy.new @controller
-        end
-      end
-
-      class ViewExampleGroupController < ApplicationController #:nodoc:
-        include Spec::Rails::Example::RenderObserver
-        attr_reader :template
-
-        def add_helper_for(template_path)
-          add_helper(template_path.split('/')[0])
-        end
-
-        def add_helper(name)
-          begin
-            helper_module = "#{name}_helper".camelize.constantize
-          rescue
-            return
-          end
-          (class << template; self; end).class_eval do
-            include helper_module
+          @_assigns_hash_proxy ||= AssignsHashProxy.new self do
+            @response.template
           end
         end
       end
+
     end
   end
 end

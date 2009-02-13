@@ -7,6 +7,8 @@ class BeValidAsset
   require 'md5'
   require 'ftools'
   
+  p "BeValidAsset"
+  
   MARKUP_VALIDATOR_HOST = ENV['MARKUP_VALIDATOR_HOST'] || 'validator.w3.org'
   MARKUP_VALIDATOR_PATH = ENV['MARKUP_VALIDATOR_PATH'] || '/check'
   CSS_VALIDATOR_HOST = ENV['CSS_VALIDATOR_HOST'] || 'jigsaw.w3.org'
@@ -193,14 +195,14 @@ class BeValidCSS < BeValidAsset
   end
 end
 
-def be_valid_xhtml
+def valid_xhtml?
   BeValidXhtml.new(:fragment => false)
 end
 
-def be_valid_css(filename)
+def valid_css?(filename)
   BeValidCSS.new(:filename => filename)
 end
 
-def be_valid_xhtml_fragment
+def valid_xhtml_fragment?
   BeValidXhtml.new(:fragment => true)
 end

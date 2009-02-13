@@ -18,12 +18,17 @@ class CalculationsTest < ActiveRecord::TestCase
 
   def test_should_average_field
     value = Account.average(:credit_limit)
-    assert_kind_of Float, value
-    assert_in_delta 53.0, value, 0.001
+    assert_kind_of BigDecimal, value
+    assert_equal BigDecimal.new('53.0'), value
   end
 
   def test_should_return_nil_as_average
     assert_nil NumericData.average(:bank_balance)
+  end
+  
+  def test_type_cast_calculated_value_should_convert_db_averages_of_fixnum_class_to_decimal
+    assert_equal 0, NumericData.send(:type_cast_calculated_value, 0, nil, 'avg')
+    assert_equal 53.0, NumericData.send(:type_cast_calculated_value, 53, nil, 'avg')
   end
 
   def test_should_get_maximum_of_field
@@ -151,24 +156,23 @@ class CalculationsTest < ActiveRecord::TestCase
     assert_equal 1, c[companies(:first_client)]
   end
 
-  uses_mocha 'group_by_non_numeric_foreign_key_association' do
-    def test_should_group_by_association_with_non_numeric_foreign_key
-      ActiveRecord::Base.connection.expects(:select_all).returns([{"count_all" => 1, "firm_id" => "ABC"}])
+  def test_should_group_by_association_with_non_numeric_foreign_key
+    ActiveRecord::Base.connection.expects(:select_all).returns([{"count_all" => 1, "firm_id" => "ABC"}])
 
-      firm = mock()
-      firm.expects(:id).returns("ABC")
-      firm.expects(:class).returns(Firm)
-      Company.expects(:find).with(["ABC"]).returns([firm])
+    firm = mock()
+    firm.expects(:id).returns("ABC")
+    firm.expects(:class).returns(Firm)
+    Company.expects(:find).with(["ABC"]).returns([firm])
 
-      column = mock()
-      column.expects(:name).at_least_once.returns(:firm_id)
-      column.expects(:type_cast).with("ABC").returns("ABC")
-      Account.expects(:columns).at_least_once.returns([column])
+    column = mock()
+    column.expects(:name).at_least_once.returns(:firm_id)
+    column.expects(:type_cast).with("ABC").returns("ABC")
+    Account.expects(:columns).at_least_once.returns([column])
 
-      c = Account.count(:all, :group => :firm)
-      assert_equal Firm, c.first.first.class
-      assert_equal 1, c.first.last
-    end
+    c = Account.count(:all, :group => :firm)
+    first_key = c.keys.first
+    assert_equal Firm, first_key.class
+    assert_equal 1, c[first_key]
   end
 
   def test_should_calculate_grouped_association_with_foreign_key_option
@@ -273,7 +277,7 @@ class CalculationsTest < ActiveRecord::TestCase
   end
 
   def test_should_sum_expression
-    assert_equal 636, Account.sum("2 * credit_limit")
+    assert_equal '636', Account.sum("2 * credit_limit")
   end
 
   def test_count_with_from_option

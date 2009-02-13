@@ -1,3 +1,0 @@
-This repo has now been frozen and the most current version is available from the current url.
-
-http://assert-valid-asset.googlecode.com/svn/trunk/

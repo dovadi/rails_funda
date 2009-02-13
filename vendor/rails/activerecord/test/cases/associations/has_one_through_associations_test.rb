@@ -1,11 +1,14 @@
 require "cases/helper"
 require 'models/club'
+require 'models/member_type'
 require 'models/member'
 require 'models/membership'
 require 'models/sponsor'
+require 'models/organization'
+require 'models/member_detail'
 
 class HasOneThroughAssociationsTest < ActiveRecord::TestCase
-  fixtures :members, :clubs, :memberships, :sponsors
+  fixtures :member_types, :members, :clubs, :memberships, :sponsors, :organizations
   
   def setup
     @member = members(:groucho)
@@ -110,4 +113,64 @@ class HasOneThroughAssociationsTest < ActiveRecord::TestCase
     new_member.club = new_club = Club.create(:name => "LRUG")
     assert_equal new_club, new_member.club.target
   end
+
+  def test_has_one_through_proxy_should_not_respond_to_private_methods
+    assert_raises(NoMethodError) { clubs(:moustache_club).private_method }
+    assert_raises(NoMethodError) { @member.club.private_method }
+  end
+
+  def test_has_one_through_proxy_should_respond_to_private_methods_via_send
+    clubs(:moustache_club).send(:private_method)
+    @member.club.send(:private_method)
+  end
+
+  def test_assigning_to_has_one_through_preserves_decorated_join_record
+    @organization = organizations(:nsa)
+    assert_difference 'MemberDetail.count', 1 do
+      @member_detail = MemberDetail.new(:extra_data => 'Extra')
+      @member.member_detail = @member_detail
+      @member.organization = @organization
+    end
+    assert_equal @organization, @member.organization
+    assert @organization.members.include?(@member)
+    assert_equal 'Extra', @member.member_detail.extra_data
+  end
+
+  def test_reassigning_has_one_through
+    @organization = organizations(:nsa)
+    @new_organization = organizations(:discordians)
+
+    assert_difference 'MemberDetail.count', 1 do
+      @member_detail = MemberDetail.new(:extra_data => 'Extra')
+      @member.member_detail = @member_detail
+      @member.organization = @organization
+    end
+    assert_equal @organization, @member.organization
+    assert_equal 'Extra', @member.member_detail.extra_data
+    assert @organization.members.include?(@member)
+    assert !@new_organization.members.include?(@member)
+
+    assert_no_difference 'MemberDetail.count' do
+      @member.organization = @new_organization
+    end
+    assert_equal @new_organization, @member.organization
+    assert_equal 'Extra', @member.member_detail.extra_data
+    assert !@organization.members.include?(@member)
+    assert @new_organization.members.include?(@member)
+  end
+
+  def test_preloading_has_one_through_on_belongs_to
+    assert_not_nil @member.member_type
+    @organization = organizations(:nsa)
+    @member_detail = MemberDetail.new
+    @member.member_detail = @member_detail
+    @member.organization = @organization
+    @member_details = assert_queries(3) do
+      MemberDetail.find(:all, :include => :member_type)
+    end
+    @new_detail = @member_details[0]
+    assert @new_detail.loaded_member_type?
+    assert_not_nil assert_no_queries { @new_detail.member_type }
+  end
+
 end

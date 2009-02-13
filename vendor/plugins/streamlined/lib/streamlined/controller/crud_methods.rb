@@ -38,7 +38,7 @@ module Streamlined::Controller::CrudMethods
     end
 
     self.instance_variable_set("@#{model_name.variableize}_pages", model_pages)
-    self.instance_variable_set("@#{Inflector.tableize(model_name)}", models)
+    self.instance_variable_set("@#{ActiveSupport::Inflector.tableize(model_name)}", models)
     @streamlined_items = models
     @streamlined_item_pages = model_pages
     find_columns_for_export if exporting

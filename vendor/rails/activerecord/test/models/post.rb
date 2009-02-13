@@ -13,14 +13,23 @@ class Post < ActiveRecord::Base
   end
 
   belongs_to :author_with_posts, :class_name => "Author", :foreign_key => :author_id, :include => :posts
+  belongs_to :author_with_address, :class_name => "Author", :foreign_key => :author_id, :include => :author_address
 
   has_one :last_comment, :class_name => 'Comment', :order => 'id desc'
+
+  named_scope :with_special_comments, :joins => :comments, :conditions => {:comments => {:type => 'SpecialComment'} }
+  named_scope :with_very_special_comments, :joins => :comments, :conditions => {:comments => {:type => 'VerySpecialComment'} }
+  named_scope :with_post, lambda {|post_id|
+    { :joins => :comments, :conditions => {:comments => {:post_id => post_id} } }
+  }
 
   has_many   :comments, :order => "body" do
     def find_most_recent
       find(:first, :order => "id DESC")
     end
   end
+
+  has_many :author_favorites, :through => :author
 
   has_many :comments_with_interpolated_conditions, :class_name => 'Comment',
       :conditions => ['#{"#{aliased_table_name}." rescue ""}body = ?', 'Thank you for the welcome']

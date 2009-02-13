@@ -2,10 +2,11 @@ require File.dirname(__FILE__) + '/../../spec_helper'
 
 describe "layouts" do
   it 'renders application' do
-
     usr = mock(User, :login=>"dovadi")
     usr.should_receive(:has_role?).and_return(true)
     assigns[:current_user] = usr
+    @controller.template.stub!(:logged_in?).and_return(true)
+    @controller.template.stub!(:current_user).and_return(usr)
     render "/layouts/application.html.erb"
     response.should be_valid_xhtml
   end

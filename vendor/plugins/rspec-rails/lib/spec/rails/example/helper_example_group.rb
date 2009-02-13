@@ -1,6 +1,10 @@
 module Spec
   module Rails
     module Example
+      class HelperExampleGroupController < ApplicationController #:nodoc:
+        attr_accessor :request, :url
+      end
+
       # Helper Specs live in $RAILS_ROOT/spec/helpers/.
       #
       # Helper Specs use Spec::Rails::Example::HelperExampleGroup, which allows you to
@@ -12,7 +16,7 @@ module Spec
       #
       # == Example
       #
-      #   class ThingHelper
+      #   module ThingHelper
       #     def number_of_things
       #       Thing.count
       #     end
@@ -26,6 +30,9 @@ module Spec
       #     end
       #   end
       class HelperExampleGroup < FunctionalExampleGroup
+        tests HelperExampleGroupController
+        attr_accessor :output_buffer
+        
         class HelperObject < ActionView::Base
           def protect_against_forgery?
             false
@@ -96,15 +103,15 @@ module Spec
         def helper
           self.class.helper
         end
-
+        
+        def orig_assigns
+          helper.assigns
+        end
+        
         # Reverse the load order so that custom helpers which are defined last
         # are also loaded last.
         ActionView::Base.included_modules.reverse.each do |mod|
           include mod if mod.parents.include?(ActionView::Helpers)
-        end
-
-        before(:all) do
-          @controller_class_name = 'Spec::Rails::Example::HelperExampleGroupController'
         end
 
         before(:each) do
@@ -113,7 +120,9 @@ module Spec
 
           @flash = ActionController::Flash::FlashHash.new
           session['flash'] = @flash
-
+          
+          @output_buffer = ""
+          @template = helper
           ActionView::Helpers::AssetTagHelper::reset_javascript_include_default
           
           helper.session = session
@@ -148,16 +157,11 @@ module Spec
 
         protected
         def _assigns_hash_proxy
-          @_assigns_hash_proxy ||= AssignsHashProxy.new helper
+          @_assigns_hash_proxy ||= AssignsHashProxy.new self do
+            helper
+          end
         end
 
-      end
-
-      class HelperExampleGroupController < ApplicationController #:nodoc:
-        attr_accessor :request, :url
-
-        # Re-raise errors
-        def rescue_action(e); raise e; end
       end
     end
   end

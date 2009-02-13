@@ -4,11 +4,12 @@ module Spec
       unless defined? MAJOR
         MAJOR  = 1
         MINOR  = 1
-        TINY   = 4
+        TINY   = 99
+        MINESCULE = 3
 
-        STRING = [MAJOR, MINOR, TINY].join('.')
+        STRING = [MAJOR, MINOR, TINY, MINESCULE].compact.join('.')
 
-        SUMMARY = "rspec-rails version #{STRING}"
+        SUMMARY = "rspec-rails #{STRING}"
       end
     end
   end

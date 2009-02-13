@@ -1,7 +1,7 @@
 <% if logged_in? -%>
   <div id="user-bar-greeting">Logged in as <%= link_to current_user.login, main_url(:subdomain=>current_user.login) %></div>
   <div id="user-bar-action"  >(<%= link_to "Log out", logout_url(:subdomain=>false), { :title => "Log out" }    %>)</div>
-  <%if current_user.has_role?('admin')%>  
+  <% if current_user.has_role?('admin')%>  
     <div id="user-bar-admin"  ><%= link_to "Administrator panel &rarr;", {:controller=>"admin/users"}, { :title => "Administrator panel" }%></div>
   <%end%>  
 <% else -%>
